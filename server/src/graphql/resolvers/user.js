@@ -1,26 +1,59 @@
-import mongoose from 'mongoose';
+import Joi from '@hapi/joi';
 import { UserInputError } from 'apollo-server-express';
-import { registerValidate } from '../validators';
+import { registerValidate, loginValidate } from '../validators';
 import { User } from '../../models';
-import * as auth from '../../functions/auth';
-import { issuTokens } from '../../functions/auth';
+import {
+  issuTokens,
+  getAuthUser,
+  getRefreshTokenUser
+} from '../../functions/auth';
 
 export default {
   Query: {
-    profile: (root, args, { req }, info) => {},
-    users: (root, args, { req }, info) => {},
-    login: (root, { id }, { req }, info) => {},
-    refreshToken: (root, args, { req }, info) => {}
+    profile: async (root, args, { req }, info) => {
+      const authUser = await getAuthUser(req);
+      return authUser;
+    },
+    users: async (root, args, { req }, info) => {
+      await getAuthUser(req);
+      const users = await User.find();
+      return users;
+    },
+    login: async (root, args, { req }, info) => {
+      Joi.assert(args, loginValidate, { abortEarly: false });
+
+      const user = await User.findOne({ email: args.email });
+
+      if (!user) {
+        throw new Error('User is not registered');
+      }
+
+      const isMatch = user.matchPassword(args.password);
+
+      if (!isMatch) {
+        throw new Error('Invalid password');
+      }
+
+      const tokens = await issuTokens(user);
+
+      return {
+        user,
+        ...tokens
+      };
+    },
+    refreshToken: async (root, args, { req }, info) => {
+      const authUser = await getRefreshTokenUser(req);
+      const tokens = await issuTokens(authUser);
+      return {
+        user: authUser,
+        ...tokens
+      };
+    }
   },
 
   Mutation: {
     register: async (root, args, { req }, info) => {
-      const { error } = registerValidate.validate(args, { abortEarly: false });
-      if (error) {
-        throw new UserInputError('failed to register user', {
-          validationError: error.details
-        });
-      }
+      Joi.assert(args, registerValidate, { abortEarly: false });
 
       const user = await User.findOne({ email: args.email });
 

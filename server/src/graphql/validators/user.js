@@ -10,13 +10,13 @@ const password = Joi.string()
       'must have eight characters, at least one lowercase letter, one uppercase letter, one digit and one special character'
   });
 
-export const registerValidate = Joi.object({
+export const registerValidate = Joi.object().keys({
   email,
   name,
   password
 });
 
-export const loginValidate = Joi.object({
+export const loginValidate = Joi.object().keys({
   email,
   password
 });

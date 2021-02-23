@@ -8,19 +8,12 @@ import { DATABASE_URL, APP_PORT, IN_PROD } from './config';
 
 const app = express();
 
-app.disable('x-powered-by')
-
+app.disable('x-powered-by');
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  playground: IN_PROD
-    ? false
-    : {
-        settings: {
-          'request.credentials': 'include'
-        }
-      }
+  context: ({ req, res }) => ({ req, res })
 });
 
 const connectDb = () => {
