@@ -1,11 +1,11 @@
-import redis from 'redis';
-import express from 'express';
-import session from 'express-session';
-import connectRedis from 'connect-redis';
-import { ApolloServer } from 'apollo-server-express';
-import mongoose from 'mongoose';
-import typeDefs from './graphql/typeDefs';
-import resolvers from './graphql/resolvers';
+import redis from 'redis'
+import express from 'express'
+import session from 'express-session'
+import connectRedis from 'connect-redis'
+import { ApolloServer } from 'apollo-server-express'
+import mongoose from 'mongoose'
+import typeDefs from './graphql/typeDefs'
+import resolvers from './graphql/resolvers'
 
 import {
   DATABASE_URL,
@@ -17,20 +17,20 @@ import {
   SESS_NAME,
   SESS_SECRET,
   SESS_LIFETIME
-} from './config';
+} from './config'
 
-const app = express();
+const app = express()
 
-app.disable('x-powered-by');
+app.disable('x-powered-by')
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req, res }) => ({ req, res })
-});
+})
 
 const connectDb = () => {
-  console.log('connecting to', DATABASE_URL);
+  console.log('connecting to', DATABASE_URL)
 
   mongoose
     .connect(DATABASE_URL, {
@@ -40,28 +40,28 @@ const connectDb = () => {
       useCreateIndex: true
     })
     .then(() => {
-      console.log('connected to MongoDB');
+      console.log('connected to MongoDB')
     })
     .catch((error) => {
-      console.log('error connection to MongoDB:', error.message);
-    });
-};
+      console.log('error connection to MongoDB:', error.message)
+    })
+}
 
-connectDb();
+connectDb()
 
-const RedisStore = connectRedis(session);
+const RedisStore = connectRedis(session)
 
 const redisClient = redis.createClient({
   host: REDIS_HOST,
-  port: REDIS_PORT,
-});
+  port: REDIS_PORT
+})
 
-redisClient.auth(REDIS_PASS);
+redisClient.auth(REDIS_PASS)
 
-redisClient.unref();
-redisClient.on('error', console.log);
+redisClient.unref()
+redisClient.on('error', console.log)
 
-const store = new RedisStore({ client: redisClient });
+const store = new RedisStore({ client: redisClient })
 
 app.use(
   session({
@@ -75,10 +75,10 @@ app.use(
       secure: IN_PROD
     }
   })
-);
+)
 
-server.applyMiddleware({ app, cors: false });
+server.applyMiddleware({ app, cors: false })
 
 app.listen({ port: APP_PORT }, () =>
   console.log(`http://localhost:${APP_PORT}${server.graphqlPath}`)
-);
+)

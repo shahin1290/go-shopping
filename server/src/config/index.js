@@ -1,5 +1,5 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 export const {
   DATABASE_URL,
@@ -13,6 +13,7 @@ export const {
   SESS_NAME,
   SESS_SECRET,
   SESS_LIFETIME
-} = process.env;
+// eslint-disable-next-line no-undef
+} = process.env
 
-export const IN_PROD = NODE_ENV === 'production';
+export const IN_PROD = NODE_ENV === 'production'
