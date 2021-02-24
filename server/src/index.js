@@ -1,10 +1,23 @@
+import redis from 'redis';
 import express from 'express';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
 import { ApolloServer } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
 
-import { DATABASE_URL, APP_PORT, IN_PROD } from './config';
+import {
+  DATABASE_URL,
+  APP_PORT,
+  IN_PROD,
+  REDIS_HOST,
+  REDIS_PORT,
+  REDIS_PASS,
+  SESS_NAME,
+  SESS_SECRET,
+  SESS_LIFETIME
+} from './config';
 
 const app = express();
 
@@ -35,6 +48,34 @@ const connectDb = () => {
 };
 
 connectDb();
+
+const RedisStore = connectRedis(session);
+
+const redisClient = redis.createClient({
+  host: REDIS_HOST,
+  port: REDIS_PORT,
+});
+
+redisClient.auth(REDIS_PASS);
+
+redisClient.unref();
+redisClient.on('error', console.log);
+
+const store = new RedisStore({ client: redisClient });
+
+app.use(
+  session({
+    store,
+    name: SESS_NAME,
+    secret: SESS_SECRET,
+    resave: false,
+    cookie: {
+      maxAge: Number(SESS_LIFETIME),
+      sameSite: true,
+      secure: IN_PROD
+    }
+  })
+);
 
 server.applyMiddleware({ app, cors: false });
 

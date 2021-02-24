@@ -1,71 +1,62 @@
-import Joi from '@hapi/joi';
+import mongoose from 'mongoose';
 import { UserInputError } from 'apollo-server-express';
-import { registerValidate, loginValidate } from '../validators';
+import * as Joi from '@hapi/joi';
+import { signupValidate, signinValidate } from '../validators';
 import { User } from '../../models';
-import {
-  issuTokens,
-  getAuthUser,
-  getRefreshTokenUser
-} from '../../functions/auth';
+import * as auth from '../../functions/auth';
 
 export default {
   Query: {
-    profile: async (root, args, { req }, info) => {
-      const authUser = await getAuthUser(req);
-      return authUser;
+    me: (root, args, { req }, info) => {
+      auth.checkSignedIn(req);
+      return User.findById(req.session.userId);
     },
-    users: async (root, args, { req }, info) => {
-      await getAuthUser(req);
-      const users = await User.find();
-      return users;
+    users: (root, args, { req }, info) => {
+      auth.checkSignedIn(req);
+      return User.find({});
     },
-    login: async (root, args, { req }, info) => {
-      Joi.assert(args, loginValidate, { abortEarly: false });
-
-      const user = await User.findOne({ email: args.email });
-
-      if (!user) {
-        throw new Error('User is not registered');
+    user: (root, { id }, { req }, info) => {
+      auth.checkSignedIn(req);
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new UserInputError(`${id} is not a valid user ID.`);
       }
-
-      const isMatch = user.matchPassword(args.password);
-
-      if (!isMatch) {
-        throw new Error('Invalid password');
-      }
-
-      const tokens = await issuTokens(user);
-
-      return {
-        user,
-        ...tokens
-      };
-    },
-    refreshToken: async (root, args, { req }, info) => {
-      const authUser = await getRefreshTokenUser(req);
-      const tokens = await issuTokens(authUser);
-      return {
-        user: authUser,
-        ...tokens
-      };
+      return User.findById(id);
     }
   },
 
   Mutation: {
-    register: async (root, args, { req }, info) => {
-      Joi.assert(args, registerValidate, { abortEarly: false });
+    signUp: async (root, args, { req }, info) => {
+      Joi.assert(args, signupValidate, { abortEarly: false });
 
-      const user = await User.findOne({ email: args.email });
+      auth.checkSignedOut(req);
 
-      if (user) {
-        throw new Error('Email already registered');
+      const user = await User.create(args);
+
+      req.session.userId = user.id;
+
+      return user;
+    },
+    signIn: async (root, args, { req }, info) => {
+      const { userId } = req.session;
+
+      if (userId) {
+        return User.findById(userId);
       }
-      const newUser = await User.create(args);
-      const tokens = await issuTokens(newUser);
-      return {
-        user: newUser,
-        ...tokens
-      };
+
+      Joi.assert(args, signinValidate, { abortEarly: false });
+
+      const { email, password } = args;
+
+      const user = await auth.attemptSigneIn(email, password);
+
+      req.session.userId = user.id;
+
+      return user;
+    },
+    signOut: async (root, args, { req, res }, info) => {
+      auth.checkSignedIn(req);
+
+      return auth.signOut(req, res);
     }
   }
 };
