@@ -1,7 +1,10 @@
-import {ApolloProvider} from '@apollo/react-hooks'
-import apolloClient from '../apollo/apolloClient'
-
 import PageLayout from '../components/PageLayout'
+import apolloClient from '../apollo/apolloClient'
+import {
+  ApolloProvider,
+  
+} from '@apollo/react-hooks'
+
 
 
 function MyApp({ Component, pageProps, apollo }) {

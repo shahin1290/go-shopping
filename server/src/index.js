@@ -1,87 +1,36 @@
-import redis from 'redis'
-import express from 'express'
-import session from 'express-session'
-import connectRedis from 'connect-redis'
-import { ApolloServer } from 'apollo-server-express'
-import mongoose from 'mongoose'
-import cors from 'cors'
-import typeDefs from './graphql/typeDefs'
-import resolvers from './graphql/resolvers'
+const express = require('express')
+const connectDb = require('./config/db')
+const { ApolloServer } = require('apollo-server-express')
+const cors = require('cors')
+const typeDefs = require('./graphql/types')
+const resolvers = require('./graphql/resolvers')
+const models = require('./models')
+const authContext = require('./graphql/context')
 
-import {
-  DATABASE_URL,
-  APP_PORT,
-  IN_PROD,
-  REDIS_HOST,
-  REDIS_PORT,
-  REDIS_PASS,
-  SESS_NAME,
-  SESS_SECRET,
-  SESS_LIFETIME
-} from './config'
+connectDb()
 
 const app = express()
-app.use(cors())
 
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+  })
+)
 
 app.disable('x-powered-by')
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => ({ req, res })
-})
-
-const connectDb = () => {
-  console.log('connecting to', DATABASE_URL)
-
-  mongoose
-    .connect(DATABASE_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true
-    })
-    .then(() => {
-      console.log('connected to MongoDB')
-    })
-    .catch((error) => {
-      console.log('error connection to MongoDB:', error.message)
-    })
-}
-
-connectDb()
-
-const RedisStore = connectRedis(session)
-
-const redisClient = redis.createClient({
-  host: REDIS_HOST,
-  port: REDIS_PORT
-})
-
-redisClient.auth(REDIS_PASS)
-
-redisClient.unref()
-redisClient.on('error', console.log)
-
-const store = new RedisStore({ client: redisClient })
-
-app.use(
-  session({
-    store,
-    name: SESS_NAME,
-    secret: SESS_SECRET,
-    resave: false,
-    cookie: {
-      maxAge: Number(SESS_LIFETIME),
-      sameSite: true,
-      secure: IN_PROD
-    }
+  context: ({ req }) => ({
+    currentUser: authContext(req),
+    models
   })
-)
+})
 
-server.applyMiddleware({ app })
+server.applyMiddleware({ app, cors: false })
 
-app.listen({ port: APP_PORT }, () =>
-  console.log(`http://localhost:${APP_PORT}${server.graphqlPath}`)
+app.listen({ port: process.env.APP_PORT }, () =>
+  console.log(`http://localhost:${process.env.APP_PORT}${server.graphqlPath}`)
 )

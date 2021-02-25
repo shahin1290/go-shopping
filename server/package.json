@@ -1,32 +1,69 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "sick-fits-backend",
+  "version": "2.0.0",
+  "private": true,
+  "author": "Wes Bos",
+  "license": "MIT",
   "scripts": {
-    "start": "node_ENV=production node -r esm .",
-    "dev": "nodemon -r esm",
-    "lint": "eslint ."
+    "dev": "nodemon ./src/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": 10,
+            "browsers": [
+              "last 2 chrome versions",
+              "last 2 firefox versions",
+              "last 2 safari versions",
+              "last 2 edge versions"
+            ]
+          }
+        }
+      ],
+      "@babel/preset-react",
+      "@babel/preset-typescript"
+    ]
+  },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "apollo-server-express": "^2.21.0",
     "bcrypt": "^5.0.0",
-    "connect-redis": "^5.1.0",
+    "cloudinary": "^1.24.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "esm": "^3.2.25",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
     "graphql": "^15.5.0",
-    "mongoose": "^5.11.17",
-    "redis": "^3.0.2"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.15",
+    "mongoose-unique-validator": "^2.0.3",
+    "next": "^10.0.5",
+    "nodemailer": "^6.4.17",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "stripe": "^8.130.0"
   },
   "devDependencies": {
-    "eslint": "^7.20.0",
-    "nodemon": "^2.0.7"
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-wesbos": "^2.0.0-beta.4",
+    "eslint-plugin-html": "^6.1.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

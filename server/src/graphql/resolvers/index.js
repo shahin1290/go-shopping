@@ -1,3 +1,11 @@
-import user from './user'
+const mutations = require('./mutations')
+const queries = require('./queries')
 
-export default [user]
+module.exports = {
+  Mutation: {
+    ...mutations
+  },
+  Query: {
+    ...queries
+  }
+}

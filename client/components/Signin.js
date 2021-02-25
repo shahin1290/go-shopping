@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React, { useState, useContext } from 'react'
+import Router from 'next/router'
 import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 
-const SIGN_UP = gql`
-  mutation SIGN_UP($name: String!, $email: String!, $password: String!) {
-    registerUser(name: $name, email: $email, password: $password) {
+const LOG_IN = gql`
+  mutation LOG_IN($email: String!, $password: String!) {
+    signIn(email: $email, password: $password) {
       id
       name
       email
@@ -13,24 +13,21 @@ const SIGN_UP = gql`
   }
 `
 
-const Signup = () => {
+const Signin = () => {
   const [userInfo, setUserInfo] = useState({
-    name: '',
     email: '',
     password: ''
   })
-  const [success, setSuccess] = useState(false)
 
-  const [signup, { loading, error }] = useMutation(SIGN_UP, {
+  const [login, { loading, error }] = useMutation(LOG_IN, {
     variables: { ...userInfo },
     onCompleted: (data) => {
       if (data) {
-        setSuccess(true)
         setUserInfo({
-          name: '',
           email: '',
           password: ''
         })
+        /* Router.push('/products') */
       }
     }
   })
@@ -45,8 +42,8 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault()
-      const res = await signup()
-      console.log(res);
+      console.log(userInfo)
+      const res = await login()
     } catch (error) {
       console.log(error)
     }
@@ -64,14 +61,6 @@ const Signup = () => {
           }}
           onSubmit={handleSubmit}
         >
-          <input
-            style={{ margin: '5px', height: '30px' }}
-            type='text'
-            name='name'
-            placeholder='Username'
-            value={userInfo.name}
-            onChange={handleChange}
-          />
           <input
             style={{ margin: '5px', height: '30px' }}
             type='email'
@@ -106,16 +95,18 @@ const Signup = () => {
         </form>
 
         <div style={{ width: '30%', margin: 'auto' }}>
-          {success && (
-            <p>
-              You successfully signed up, please{' '}
-              <Link href='/signin'>
-                <a>sign in</a>
-              </Link>
-              .
-            </p>
-          )}
+          <p>
+            Forgot password?{' '}
+            <span
+              style={{ color: 'orange', cursor: 'pointer' }}
+              onClick={() => Router.push('/signin/requestresetpassword')}
+            >
+              Click here
+            </span>
+          </p>
+        </div>
 
+        <div style={{ width: '30%', margin: 'auto' }}>
           {/* {error && (
             <p style={{ color: 'red' }}>{error.graphQLErrors[0].message}</p>
           )} */}
@@ -183,4 +174,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default Signin
