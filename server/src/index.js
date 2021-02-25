@@ -4,6 +4,7 @@ import session from 'express-session'
 import connectRedis from 'connect-redis'
 import { ApolloServer } from 'apollo-server-express'
 import mongoose from 'mongoose'
+import cors from 'cors'
 import typeDefs from './graphql/typeDefs'
 import resolvers from './graphql/resolvers'
 
@@ -20,6 +21,8 @@ import {
 } from './config'
 
 const app = express()
+app.use(cors())
+
 
 app.disable('x-powered-by')
 
@@ -77,7 +80,7 @@ app.use(
   })
 )
 
-server.applyMiddleware({ app, cors: false })
+server.applyMiddleware({ app })
 
 app.listen({ port: APP_PORT }, () =>
   console.log(`http://localhost:${APP_PORT}${server.graphqlPath}`)
