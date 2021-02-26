@@ -2,13 +2,12 @@ import React, { useState, useContext } from 'react'
 import Router from 'next/router'
 import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import Cookies from 'js-cookie'
 
 const LOG_IN = gql`
   mutation LOG_IN($email: String!, $password: String!) {
-    signIn(email: $email, password: $password) {
-      id
-      name
-      email
+    loginUser(email: $email, password: $password) {
+      value
     }
   }
 `
@@ -23,11 +22,12 @@ const Signin = () => {
     variables: { ...userInfo },
     onCompleted: (data) => {
       if (data) {
+        Cookies.set('jwt', data.loginUser.value)
+
         setUserInfo({
           email: '',
           password: ''
         })
-        /* Router.push('/products') */
       }
     }
   })
@@ -44,6 +44,7 @@ const Signin = () => {
       e.preventDefault()
       console.log(userInfo)
       const res = await login()
+      console.log(res)
     } catch (error) {
       console.log(error)
     }

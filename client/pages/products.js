@@ -1,13 +1,8 @@
-import React from 'react';
-import PageLayout from '../components/PageLayout'
+import React from 'react'
+import Products from '../components/Products'
 
+const ProductsPage = () => {
+  return <Products />
+}
 
-const products = () => {
-  return (
-    <>
-      Products Page
-    </>
-  );
-};
-
-export default products;
+export default ProductsPage
