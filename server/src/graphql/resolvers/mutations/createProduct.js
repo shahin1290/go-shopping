@@ -1,18 +1,20 @@
-const { UserInputError } = require('apollo-server-express');
-const uploadFile = require('./uploadFile');
+const { UserInputError } = require('apollo-server-express')
+const uploadFile = require('./uploadFile')
 
 module.exports = async (_, args, { models }) => {
   try {
-    const { name, description, price, photo } = args;
+    const { name, description, price, photo } = args
     const newProduct = new models.Product({
       name,
       description,
-      price,
-    });
+      price
+    })
 
-    const createdProduct = await newProduct.save();
+    const createdProduct = await newProduct.save()
 
-    const file = await uploadFile(photo);
+    return createdProduct
+
+    /* const file = await uploadFile(photo);
 
     const newPhoto = new models.Photo({
       imageUrl: file.secure_url,
@@ -28,10 +30,10 @@ module.exports = async (_, args, { models }) => {
       { new: true }
     );
 
-    return updatedProduct;
+    return updatedProduct; */
   } catch (error) {
     throw new UserInputError(error.message, {
-      invalidArgs: args,
-    });
+      invalidArgs: args
+    })
   }
-};
+}
