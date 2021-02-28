@@ -1,13 +1,14 @@
-const { UserInputError } = require('apollo-server-express');
+const Joi = require('@hapi/joi')
+const { registerValidate } = require('../../validators/user')
 
-module.exports = (root, args, { models }) => {
+module.exports = async (root, args, { models }) => {
+  Joi.assert(args, registerValidate, { abortEarly: false })
+
   console.log(args);
-  const { name, email, password } = args;
-  const user = new models.User({ name, email, password });
 
-  return user.save().catch((error) => {
-    throw new UserInputError(error.message, {
-      invalidArgs: args,
-    });
-  });
-};
+  const newUser = new models.User(args)
+
+  const user = await newUser.save()
+
+  return user
+}

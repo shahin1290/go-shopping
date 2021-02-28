@@ -1,21 +1,29 @@
+import { useState } from 'react'
 
-import { useState } from 'react';
+export const useForm = function (initial = {}) {
+  const [inputs, setInputs] = useState(initial)
 
-export const useForm = (callback, initialState = {}) => {
-  const [values, setValues] = useState(initialState);
+  function handleChange(e) {
+    let { value, name, type } = e.target
+    if (type === 'number') {
+      value = parseInt(value)
+    }
+    if (type === 'file') {
+      ;[value] = e.target.files
+    }
+    setInputs({
+      ...inputs,
+      [name]: value
+    })
+  }
 
-  const onChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    callback();
-  };
+  function resetForm() {
+    setInputs(initial)
+  }
 
   return {
-    onChange,
-    onSubmit,
-    values
-  };
-};
+    inputs,
+    handleChange,
+    resetForm
+  }
+}
