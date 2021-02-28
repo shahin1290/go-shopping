@@ -1,69 +1,76 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { Button, Form } from 'semantic-ui-react'
 import { useMutation } from '@apollo/client'
 
+// import { AuthContext } from '../context/auth';
+import { useForm } from '../util/hooks.js'
 import { LOGIN_USER } from '../mutations'
 
-const Login = ({ setError }) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+function Login(props) {
+  // const context = useContext(AuthContext);
+  const [errors, setErrors] = useState('')
 
-  const [loginUser, result] = useMutation(LOGIN_USER, {
-    
-    update: (store, response) => {
-      console.log('-->', response.data.addPerson)
-      /*
-      const dataInStore = store.readQuery({ query: ALL_PERSONS })
-      dataInStore.allPersons.push(response.data.addPerson)
-      store.writeQuery({
-        query: ALL_PERSONS,
-        data: dataInStore
-      })
-      */
-    }
+  const { inputs, handleChange, resetForm } = useForm({
+    email: '',
+    password: ''
   })
 
-  useEffect(() => {
-    if (result.data) {
-      const token = result.data.loginUser.value
-      localStorage.setItem('shopping-user-token', token)
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
+    update(_, { data: { register: userData } }) {
+      // context.login(userData);
+      props.history.push('/')
+    },
+    onError(err) {
+      setErrors(err.message)
+    },
+    variables: inputs
+  })
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    const res = await loginUser()
+    if (res) {
+      resetForm()
     }
-  }, [result.data])
-
-  const submit = async (event) => {
-    event.preventDefault()
-    loginUser({
-      variables: {
-        email,
-        password
-      }
-    })
-
-    setEmail('')
-    setPassword('')
   }
 
   return (
-    <div>
-      <h2>login</h2>
-      <form onSubmit={submit}>
-        
-        <div>
-          email{' '}
-          <input
-            value={email}
-            onChange={({ target }) => setEmail(target.value)}
-          />
-        </div>
-        <div>
-          password{' '}
-          <input
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
+    <div className='form-container'>
+      <Form
+        onSubmit={handleSubmit}
+        noValidate
+        className={loading ? 'loading' : ''}
+      >
+        <h1>Login</h1>
 
-        <button type='submit'>login</button>
-      </form>
+        <Form.Input
+          label='Email'
+          placeholder='Email..'
+          name='email'
+          type='email'
+          value={inputs.email}
+          error={
+            errors.includes('email') || errors.includes('wrong credentials')
+          }
+          onChange={handleChange}
+        />
+        <Form.Input
+          label='Password'
+          placeholder='Password..'
+          name='password'
+          type='password'
+          value={inputs.password}
+          error={
+            errors.includes('password') || errors.includes('wrong credentials')
+          }
+          onChange={handleChange}
+        />
+
+        <Button type='submit' primary>
+          Login
+        </Button>
+      </Form>
+      {errors && <div className='ui error message'>{errors}</div>}
     </div>
   )
 }

@@ -8,7 +8,7 @@ import { REGISTER_USER } from '../mutations'
 
 function Register(props) {
   // const context = useContext(AuthContext);
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState('')
 
   const { inputs, handleChange, resetForm } = useForm({
     name: '',
@@ -22,7 +22,7 @@ function Register(props) {
       props.history.push('/')
     },
     onError(err) {
-      setErrors(err.graphQLErrors[0].extensions.exception.details)
+      setErrors(err.message)
     },
     variables: inputs
   })
@@ -49,7 +49,7 @@ function Register(props) {
           name='name'
           type='text'
           value={inputs.name}
-          error={errors?.some((err) => err.message.includes('Name'))}
+          error={errors.includes('name')}
           onChange={handleChange}
         />
         <Form.Input
@@ -58,7 +58,7 @@ function Register(props) {
           name='email'
           type='email'
           value={inputs.email}
-          error={errors?.some((err) => err.message.includes('Email'))}
+          error={errors.includes('email')}
           onChange={handleChange}
         />
         <Form.Input
@@ -67,7 +67,7 @@ function Register(props) {
           name='password'
           type='password'
           value={inputs.password}
-          error={errors?.some((err) => err.message.includes('Password'))}
+          error={errors.includes('password')}
           onChange={handleChange}
         />
 
@@ -75,15 +75,7 @@ function Register(props) {
           Register
         </Button>
       </Form>
-      {errors?.length > 0 && (
-        <div className='ui error message'>
-          <ul className='list'>
-            {errors.map((value, index) => (
-              <li key={index}>{value.message}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {errors && <div className='ui error message'>{errors}</div>}
     </div>
   )
 }
