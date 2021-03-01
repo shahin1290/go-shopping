@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Menu } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-
-// import { AuthContext } from '../context/auth';
+import { AuthContext } from '../context/auth'
 
 function MenuBar() {
-  // const { user, logout } = useContext(AuthContext);
-  const [token, setToken] = useState(null)
+  const { accessToken, logout } = useContext(AuthContext)
+
   const pathname = window.location.pathname
 
   const path = pathname === '/' ? 'home' : pathname.substr(1)
@@ -14,22 +13,12 @@ function MenuBar() {
 
   const handleItemClick = (e, { name }) => setActiveItem(name)
 
-  useEffect(() => {
-    const token = localStorage.getItem('shopping-user-token')
-    if (token) {
-      setToken(token)
-    }
-  }, [])
-
-  const logout = () => {
-    setToken(null)
-    localStorage.clear()
-  }
-
-  const menuBar = token ? (
+  const menuBar = accessToken ? (
     <Menu pointing secondary size='massive' color='teal'>
+      <Menu.Item name='home' active as={Link} to='/' />
+
       <Menu.Menu position='right'>
-        <Menu.Item name='logout' onClick={logout}/>
+        <Menu.Item name='logout' onClick={logout} />
       </Menu.Menu>
     </Menu>
   ) : (

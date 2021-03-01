@@ -5,7 +5,7 @@ const cors = require('cors')
 const typeDefs = require('./graphql/types')
 const resolvers = require('./graphql/resolvers')
 const models = require('./models')
-const authContext = require('./graphql/context')
+const createAuthService = require('./utils/authService')
 
 connectDb()
 
@@ -23,10 +23,19 @@ app.disable('x-powered-by')
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({
-    currentUser: authContext(req),
-    models
-  })
+  context: ({ req }) => {
+    const authorization = req.headers.authorization
+    const accessToken = authorization ? authorization.split(' ')[1] : undefined
+
+    return {
+      authService: createAuthService({
+        accessToken,
+        jwtSecret: process.env.JWT_SECRET
+      }),
+
+      models
+    }
+  }
 })
 
 server.applyMiddleware({ app, cors: false })

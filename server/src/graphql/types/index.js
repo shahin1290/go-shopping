@@ -1,6 +1,7 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require('apollo-server-express')
 
 module.exports = gql`
+  scalar Date
   type Photo {
     imageUrl: String!
     id: ID!
@@ -14,15 +15,19 @@ module.exports = gql`
     photos: [Photo]
     id: ID!
   }
+
   type User {
     name: String!
     email: String!
     password: String!
     id: ID!
   }
-  type Token {
-    value: String!
+
+  type AuthorizationPayload {
+    accessToken: String!
+    expiresAt: Date!
   }
+
   type Query {
     allProducts: [Product!]!
     allPhotos: [Photo]
@@ -49,8 +54,8 @@ module.exports = gql`
 
     deleteProduct(id: ID!): Product
 
-    registerUser(name: String!, email: String!, password: String!): User
+    registerUser(name: String!, email: String!, password: String!): User!
 
-    loginUser(email: String!, password: String!): Token
+    loginUser(email: String!, password: String!): AuthorizationPayload!
   }
-`;
+`
