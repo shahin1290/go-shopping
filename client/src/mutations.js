@@ -29,3 +29,23 @@ export const LOGIN_USER = gql`
     }
   }
 `
+export const CREATE_PRODUCT_MUTATION = gql`
+  mutation CREATE_PRODUCT_MUTATION(
+    $name: String!
+    $description: String!
+    $photo: Upload
+    $price: Int!
+  ) {
+    createProduct(
+      name: $name
+      description: $description
+      price: $price
+      photo: $photo
+    ) {
+      id
+      description
+      name
+      price
+    }
+  }
+`;

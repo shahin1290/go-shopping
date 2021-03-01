@@ -2,21 +2,19 @@ import React, { useState } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import { useMutation } from '@apollo/client'
 
-// import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks.js'
-import { REGISTER_USER } from '../mutations'
+import { CREATE_PRODUCT_MUTATION } from '../mutations'
 
-function Register(props) {
-  // const context = useContext(AuthContext);
+function Sell(props) {
   const [errors, setErrors] = useState('')
 
   const { inputs, handleChange, resetForm } = useForm({
     name: '',
-    email: '',
-    password: ''
+    description: '',
+    price: ''
   })
 
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+  const [createProduct, { loading }] = useMutation(CREATE_PRODUCT_MUTATION, {
     onCompleted() {
       props.history.push('/')
     },
@@ -28,7 +26,7 @@ function Register(props) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    const res = await registerUser()
+    const res = await createProduct()
     if (res) {
       resetForm()
     }
@@ -41,8 +39,17 @@ function Register(props) {
         noValidate
         className={loading ? 'loading' : ''}
       >
-        <h1>Register</h1>
-        
+        <h1>Add Product</h1>
+        <label htmlFor='image'>
+          Image
+          <input
+            required
+            type='file'
+            id='image'
+            name='photo'
+            onChange={handleChange}
+          />
+        </label>
         <Form.Input
           label='Name'
           placeholder='Name..'
@@ -53,26 +60,26 @@ function Register(props) {
           onChange={handleChange}
         />
         <Form.Input
-          label='Email'
-          placeholder='Email..'
-          name='email'
-          type='email'
-          value={inputs.email}
-          error={errors.includes('email')}
+          label='Description'
+          placeholder='Description..'
+          name='description'
+          type='text'
+          value={inputs.description}
+          error={errors.includes('description')}
           onChange={handleChange}
         />
         <Form.Input
-          label='Password'
-          placeholder='Password..'
-          name='password'
-          type='password'
-          value={inputs.password}
-          error={errors.includes('password')}
+          label='Price'
+          placeholder='Price..'
+          name='price'
+          type='number'
+          value={inputs.price}
+          error={errors.includes('price')}
           onChange={handleChange}
         />
 
         <Button type='submit' primary>
-          Register
+          Add!
         </Button>
       </Form>
       {errors && <div className='ui error message'>{errors}</div>}
@@ -80,4 +87,4 @@ function Register(props) {
   )
 }
 
-export default Register
+export default Sell

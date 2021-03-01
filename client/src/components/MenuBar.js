@@ -16,7 +16,12 @@ function MenuBar() {
   const menuBar = accessToken ? (
     <Menu pointing secondary size='massive' color='teal'>
       <Menu.Item name='home' active as={Link} to='/' />
-
+      <Menu.Item
+        name='sell'
+        active={activeItem === 'sell'}
+        as={Link}
+        to='/sell'
+      />
       <Menu.Menu position='right'>
         <Menu.Item name='logout' onClick={logout} />
       </Menu.Menu>
