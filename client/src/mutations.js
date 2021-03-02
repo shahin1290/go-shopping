@@ -24,8 +24,10 @@ export const EDIT_AUTHOR = gql`
 export const LOGIN_USER = gql`
   mutation loginUser($email: String!, $password: String!) {
     loginUser(email: $email, password: $password) {
-      accessToken
-      expiresAt
+      id
+      email
+      name
+      token
     }
   }
 `

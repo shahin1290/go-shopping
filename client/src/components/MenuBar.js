@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { AuthContext } from '../context/auth'
 
 function MenuBar() {
-  const { accessToken, logout } = useContext(AuthContext)
+  const { user, logout } = useContext(AuthContext)
 
   const pathname = window.location.pathname
 
@@ -13,9 +13,9 @@ function MenuBar() {
 
   const handleItemClick = (e, { name }) => setActiveItem(name)
 
-  const menuBar = accessToken ? (
+  const menuBar = user ? (
     <Menu pointing secondary size='massive' color='teal'>
-      <Menu.Item name='home' active as={Link} to='/' />
+      <Menu.Item name={user.name} active as={Link} to='/' />
       <Menu.Item
         name='sell'
         active={activeItem === 'sell'}

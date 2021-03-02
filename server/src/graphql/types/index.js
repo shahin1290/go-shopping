@@ -20,6 +20,7 @@ module.exports = gql`
     name: String!
     email: String!
     password: String!
+    token: String!
     id: ID!
   }
 
@@ -64,7 +65,7 @@ module.exports = gql`
 
     registerUser(name: String!, email: String!, password: String!): User!
 
-    loginUser(email: String!, password: String!): AuthorizationPayload!
+    loginUser(email: String!, password: String!): User!
 
     createSubscription(source: String!): User
 
