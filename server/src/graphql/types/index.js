@@ -28,6 +28,14 @@ module.exports = gql`
     expiresAt: Date!
   }
 
+  type CartItem {
+    id: ID!
+    product: Product!
+    quantity: Int!
+    user: User!
+    createdAt: Date!
+  }
+
   type Query {
     allProducts: [Product!]!
     allPhotos: [Photo]
@@ -57,5 +65,9 @@ module.exports = gql`
     registerUser(name: String!, email: String!, password: String!): User!
 
     loginUser(email: String!, password: String!): AuthorizationPayload!
+
+    createSubscription(source: String!): User
+
+    addToCart(id: ID!): CartItem!
   }
 `

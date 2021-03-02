@@ -4,7 +4,21 @@ const bcrypt = require('bcrypt')
 const schema = new mongoose.Schema({
   name: String,
   email: String,
-  password: String
+  password: String,
+  stripeId: String,
+  type: { type: String, default: 'free-trial' },
+  carts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CartItem'
+    }
+  ],
+  products: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
+    }
+  ]
 })
 
 schema.pre('save', async function (next) {

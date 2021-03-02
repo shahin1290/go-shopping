@@ -49,3 +49,13 @@ export const CREATE_PRODUCT_MUTATION = gql`
     }
   }
 `;
+
+export const CREATE_SUBSCRIPTION_MUTATION = gql `
+
+  mutation CREATE_SUBSCRIPTION_MUTATION($source: String!) {
+    createSubscription(source: $source){
+      id
+      email
+    }
+  }
+`
