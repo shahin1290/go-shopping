@@ -28,6 +28,9 @@ export const LOGIN_USER = gql`
       email
       name
       token
+      carts{
+        quantity
+      }
     }
   }
 `

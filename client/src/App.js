@@ -14,15 +14,14 @@ import Sell from './pages/Sell'
 import { AuthProvider } from './context/auth'
 
 function App() {
-  console.log(process.env.REACT_APP_STRIPE_PUBLISHABLE);
   return (
     <AuthProvider>
       <Router>
         <Container>
           <MenuBar />
           <Route exact path='/' component={Home} />
-          <AuthRoute exact path='/login' component={Login} />
-          <AuthRoute exact path='/register' component={Register} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/register' component={Register} />
           <Route exact path='/sell' component={Sell} />
           <Route exact path='/subscribe-user' component={SubscribeUser} />
         </Container>

@@ -22,6 +22,8 @@ module.exports = gql`
     password: String!
     token: String!
     id: ID!
+    carts: [CartItem]
+    products: [Product]
   }
 
   type AuthorizationPayload {
@@ -69,6 +71,6 @@ module.exports = gql`
 
     createSubscription(source: String!): User
 
-    addToCart(id: ID!): CartItem!
+    addToCart(id: ID!): CartItem
   }
 `

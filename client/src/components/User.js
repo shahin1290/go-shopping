@@ -4,6 +4,9 @@ const CURRENT_USER_QUERY = gql`
   query {
     me {
       name
+      carts {
+        quantity
+      }
     }
   }
 `;

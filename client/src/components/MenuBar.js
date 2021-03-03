@@ -2,9 +2,13 @@ import React, { useState, useContext } from 'react'
 import { Menu } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../context/auth'
+import { useUser } from './User'
 
 function MenuBar() {
   const { user, logout } = useContext(AuthContext)
+  const data = useUser()
+
+  console.log(data)
 
   const pathname = window.location.pathname
 
@@ -22,6 +26,23 @@ function MenuBar() {
         as={Link}
         to='/sell'
       />
+      <Menu.Item active={activeItem === 'sell'} as={Link} to='/sell'>
+        Cart
+        <span
+          style={{
+            background: 'red',
+            color: 'white',
+            padding: '3px',
+            borderRadius: '50%'
+          }}
+        >
+          {data && data.carts && data.carts.length === 0 && 0}
+          {data &&
+            data.carts &&
+            data.carts.length > 0 &&
+            data.carts.reduce((sum, item) => sum + item.quantity, 0)}
+        </span>
+      </Menu.Item>
       <Menu.Menu position='right'>
         <Menu.Item name='logout' onClick={logout} />
       </Menu.Menu>

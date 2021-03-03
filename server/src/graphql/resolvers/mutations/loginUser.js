@@ -7,28 +7,23 @@ const authorizeInputSchema = yup.object().shape({
   password: yup.string().required().trim()
 })
 
-module.exports = async (root, args, { models }) => {
+module.exports = async (root, args, { models, authService }) => {
   const normalizedAuthorization = await authorizeInputSchema.validate(args, {
     stripUnknown: true
   })
 
   const { email, password } = normalizedAuthorization
 
-  const user = await models.User.findOne({ email })
+  const user = await models.User.findOne({ email }).populate({
+    path: 'carts',
+    populate: { path: 'product' }
+  })
 
   if (!user || !(await user.matchPassword(password, user.password))) {
     throw new UserInputError('wrong credentials')
   }
 
-  const token = jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      name: user.name
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: '1h' }
-  )
+  const token = authService.createAccessToken(user.id, user.name).accessToken
 
   return {
     ...user._doc,
