@@ -8,7 +8,6 @@ function MenuBar() {
   const { user, logout } = useContext(AuthContext)
   const data = useUser()
 
-  console.log(data)
 
   const pathname = window.location.pathname
 
@@ -26,7 +25,7 @@ function MenuBar() {
         as={Link}
         to='/sell'
       />
-      <Menu.Item active={activeItem === 'sell'} as={Link} to='/sell'>
+      <Menu.Item active={activeItem === 'cart'} as={Link} to='/cart'>
         Cart
         <span
           style={{

@@ -3,7 +3,7 @@ const updateProduct = require('./updateProduct');
 const deleteProduct = require('./deleteProduct');
 const registerUser = require('./registerUser');
 const loginUser = require('./loginUser');
-const createSubscription = require('./createSubscription');
+const createOrder = require('./createOrder');
 const addToCart = require('./addToCart');
 
 module.exports = {
@@ -12,6 +12,6 @@ module.exports = {
   deleteProduct,
   registerUser,
   loginUser,
-  createSubscription,
+  createOrder,
   addToCart
 };

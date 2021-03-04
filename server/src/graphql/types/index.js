@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express')
 
 module.exports = gql`
   scalar Date
+
   type Photo {
     imageUrl: String!
     id: ID!
@@ -39,6 +40,21 @@ module.exports = gql`
     createdAt: Date!
   }
 
+  type OrderItem {
+    id: ID!
+    product: Product!
+    quantity: Int!
+    user: User!
+    createdAt: Date!
+  }
+
+  type Order {
+    id: ID!
+    user: User!
+    items: [OrderItem!]!
+    createdAt: Date!
+  }
+
   type Query {
     allProducts: [Product!]!
     allPhotos: [Photo]
@@ -69,8 +85,12 @@ module.exports = gql`
 
     loginUser(email: String!, password: String!): User!
 
-    createSubscription(source: String!): User
 
     addToCart(id: ID!): CartItem
+
+    createOrder(
+      amount: Float!
+      token: String
+    ): Order
   }
 `

@@ -8,7 +8,7 @@ import MenuBar from './components/MenuBar'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import SubscribeUser from './pages/SubscribeUser'
+import Cart from './pages/Carts'
 
 import Sell from './pages/Sell'
 import { AuthProvider } from './context/auth'
@@ -23,7 +23,8 @@ function App() {
           <Route exact path='/login' component={Login} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/sell' component={Sell} />
-          <Route exact path='/subscribe-user' component={SubscribeUser} />
+          
+          <Route exact path='/cart' component={Cart} />
         </Container>
       </Router>
     </AuthProvider>
