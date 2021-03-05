@@ -28,7 +28,7 @@ export const LOGIN_USER = gql`
       email
       name
       token
-      carts{
+      carts {
         quantity
       }
     }
@@ -53,12 +53,11 @@ export const CREATE_PRODUCT_MUTATION = gql`
       price
     }
   }
-`;
+`
 
-export const CREATE_SUBSCRIPTION_MUTATION = gql `
-
+export const CREATE_SUBSCRIPTION_MUTATION = gql`
   mutation CREATE_SUBSCRIPTION_MUTATION($source: String!) {
-    createSubscription(source: $source){
+    createSubscription(source: $source) {
       id
       email
     }

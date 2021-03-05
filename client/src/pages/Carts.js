@@ -90,7 +90,7 @@ const Carts = () => {
         </>
       )}
 
-      <Checkout />
+      <Checkout amount={calculateAmount(user.carts)} />
     </div>
   )
 }

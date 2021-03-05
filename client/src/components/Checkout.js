@@ -6,7 +6,7 @@ import {
   useElements,
   useStripe
 } from '@stripe/react-stripe-js'
-import { useState } from 'react'
+import React, { useState } from 'react'
 // import nProgress from 'nprogress';
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/client'
@@ -25,7 +25,7 @@ import { CURRENT_USER_QUERY } from './User'
 `; */
 
 const CREATE_ORDER_MUTATION = gql`
-  mutation CREATE_ORDER_MUTATION($token: String!, $amount: Number!) {
+  mutation CREATE_ORDER_MUTATION($token: String!, $amount: Float!) {
     createOrder(token: $token, amount: $amount) {
       id
     }
@@ -70,10 +70,10 @@ function CheckoutForm({ amount }) {
     const order = await checkout({
       variables: {
         token: paymentMethod.id,
-        amount: 500
+        amount: amount
       }
     })
-    console.log(`Finished with the order!!`)
+    console.log('Finished with the order!!')
     console.log(order)
     // 6. Change the page to view the order
     /* router.push({
@@ -103,7 +103,7 @@ function CheckoutForm({ amount }) {
 function Checkout({ amount }) {
   return (
     <Elements stripe={stripeLib}>
-      <CheckoutForm amount={500} />
+      <CheckoutForm amount={amount} />
     </Elements>
   )
 }

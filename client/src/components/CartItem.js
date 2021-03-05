@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 /* const DELETE_CART = gql`
   mutation DELETE_CART($id: ID!) {
     deleteCart(id: $id) {

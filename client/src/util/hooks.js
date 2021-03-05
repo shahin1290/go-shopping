@@ -9,6 +9,7 @@ export const useForm = function (initial = {}) {
       value = parseInt(value)
     }
     if (type === 'file') {
+      // eslint-disable-next-line no-extra-semi
       ;[value] = e.target.files
     }
     setInputs({

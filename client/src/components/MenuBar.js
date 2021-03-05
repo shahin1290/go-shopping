@@ -8,7 +8,6 @@ function MenuBar() {
   const { user, logout } = useContext(AuthContext)
   const data = useUser()
 
-
   const pathname = window.location.pathname
 
   const path = pathname === '/' ? 'home' : pathname.substr(1)

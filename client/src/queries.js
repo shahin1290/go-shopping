@@ -7,10 +7,9 @@ export const ALL_PRODUCTS = gql`
       name
       price
       description
-      photos{
+      photos {
         imageUrl
       }
     }
   }
 `
-
