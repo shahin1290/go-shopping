@@ -1,5 +1,7 @@
 // import styled from 'styled-components';
 import { loadStripe } from '@stripe/stripe-js'
+import { useHistory } from 'react-router-dom'
+
 import {
   CardElement,
   Elements,
@@ -35,6 +37,8 @@ const CREATE_ORDER_MUTATION = gql`
 const stripeLib = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE)
 
 function CheckoutForm({ amount }) {
+  const history = useHistory()
+
   const [error, setError] = useState()
   const [loading, setLoading] = useState(false)
   const stripe = useStripe()
@@ -70,11 +74,11 @@ function CheckoutForm({ amount }) {
     const order = await checkout({
       variables: {
         token: paymentMethod.id,
-        amount: amount
+        amount
       }
     })
     console.log('Finished with the order!!')
-    console.log(order)
+    history.push('/')
     // 6. Change the page to view the order
     /* router.push({
       pathname: `/order/[id]`,
@@ -95,7 +99,9 @@ function CheckoutForm({ amount }) {
       {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
       {graphQLError && <p style={{ fontSize: 12 }}>{graphQLError.message}</p>}
       <CardElement />
-      <button type='submit'>pay now</button>
+      <button type='submit' disabled={!amount}>
+        pay now
+      </button>
     </form>
   )
 }
