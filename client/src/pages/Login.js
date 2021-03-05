@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Button, Form } from 'semantic-ui-react'
+import React, { useState,  useContext } from 'react'
 import { useMutation } from '@apollo/client'
 
 import { useForm } from '../util/hooks.js'
@@ -38,14 +37,14 @@ function Login(props) {
 
   return (
     <div className='form-container'>
-      <Form
+      <form
         onSubmit={handleSubmit}
         noValidate
         className={loading ? 'loading' : ''}
       >
         <h1>Login</h1>
 
-        <Form.Input
+        <input
           label='Email'
           placeholder='Email..'
           name='email'
@@ -56,7 +55,7 @@ function Login(props) {
           }
           onChange={handleChange}
         />
-        <Form.Input
+        <input
           label='Password'
           placeholder='Password..'
           name='password'
@@ -68,10 +67,10 @@ function Login(props) {
           onChange={handleChange}
         />
 
-        <Button type='submit' primary>
+        <button type='submit' primary>
           Login
-        </Button>
-      </Form>
+        </button>
+      </form>
       {errors && <div className='ui error message'>{errors}</div>}
     </div>
   )

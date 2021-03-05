@@ -1,35 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useUser } from '../components/User'
 
 import CartItem from '../components/CartItem'
 import { Checkout } from '../components/Checkout'
-
-/* const CREATE_ORDER = gql`
-  mutation CREATE_ORDER(
-    $amount: Float!
-    $cardId: String
-    $token: String
-    $return_uri: String
-  ) {
-    createOrder(
-      amount: $amount
-      cardId: $cardId
-      token: $token
-      return_uri: $return_uri
-    ) {
-      id
-      items {
-        id
-        product {
-          description
-          price
-        }
-        quantity
-      }
-      authorize_uri
-    }
-  }
-` */
 
 const calculateAmount = (carts) => {
   const amount = carts.reduce(

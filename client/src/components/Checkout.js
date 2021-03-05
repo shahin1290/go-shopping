@@ -34,13 +34,13 @@ const CREATE_ORDER_MUTATION = gql`
   }
 `
 
+// eslint-disable-next-line no-undef
 const stripeLib = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE)
 
 function CheckoutForm({ amount }) {
   const history = useHistory()
 
   const [error, setError] = useState()
-  const [loading, setLoading] = useState(false)
   const stripe = useStripe()
   const elements = useElements()
   // const router = useRouter();
@@ -54,7 +54,6 @@ function CheckoutForm({ amount }) {
   async function handleSubmit(e) {
     // 1. Stop the form from submitting and turn the loader one
     e.preventDefault()
-    setLoading(true)
     console.log('We gotta do some work..')
     // 2. Start the page transition
     // nProgress.start();
@@ -71,7 +70,7 @@ function CheckoutForm({ amount }) {
       return // stops the checkout from happening
     }
     // 5. Send the token from step 3 to our keystone server, via a custom mutation!
-    const order = await checkout({
+    await checkout({
       variables: {
         token: paymentMethod.id,
         amount

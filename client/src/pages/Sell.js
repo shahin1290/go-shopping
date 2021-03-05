@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Button, Form } from 'semantic-ui-react'
 import { useMutation } from '@apollo/client'
 
 import { useForm } from '../util/hooks.js'
@@ -34,7 +33,7 @@ function Sell(props) {
 
   return (
     <div className='form-container'>
-      <Form
+      <form
         onSubmit={handleSubmit}
         noValidate
         className={loading ? 'loading' : ''}
@@ -50,7 +49,7 @@ function Sell(props) {
             onChange={handleChange}
           />
         </label>
-        <Form.Input
+        <input
           label='Name'
           placeholder='Name..'
           name='name'
@@ -59,7 +58,7 @@ function Sell(props) {
           error={errors.includes('name')}
           onChange={handleChange}
         />
-        <Form.Input
+        <input
           label='Description'
           placeholder='Description..'
           name='description'
@@ -68,7 +67,7 @@ function Sell(props) {
           error={errors.includes('description')}
           onChange={handleChange}
         />
-        <Form.Input
+        <input
           label='Price'
           placeholder='Price..'
           name='price'
@@ -78,10 +77,10 @@ function Sell(props) {
           onChange={handleChange}
         />
 
-        <Button type='submit' primary>
+        <button type='submit' primary>
           Add!
-        </Button>
-      </Form>
+        </button>
+      </form>
       {errors && <div className='ui error message'>{errors}</div>}
     </div>
   )

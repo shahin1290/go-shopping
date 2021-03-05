@@ -19,7 +19,7 @@ export const ADD_TO_CART = gql`
 
 const ProductItem = ({ prod, history }) => {
   const user = useUser()
-  const [addToCart, { loading, error }] = useMutation(ADD_TO_CART, {
+  const [addToCart] = useMutation(ADD_TO_CART, {
     onCompleted: (data) => {
       console.log(data)
     },

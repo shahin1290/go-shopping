@@ -20,7 +20,7 @@ const Home = () => {
         gridGap: '10px'
       }}
     >
-      {data?.allProducts.map((prod) => (
+      {data.allProducts.map((prod) => (
         <ProductItem key={prod.id} prod={prod} />
       ))}
     </div>
