@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import formatMoney from './lib/formatMoney'
 import PriceTag from './styles/PriceTag'
 import Title from './styles/Title'
+import DeleteProduct from './DeleteProduct'
 
 const ProductItem = ({ product }) => {
   return (
@@ -17,7 +18,7 @@ const ProductItem = ({ product }) => {
       <p>{product.description}</p>
       <div className='buttonList'>
         <Link to={`/edit/${product.id}`}>Edit ✏️</Link>
-        <button>Delete</button>
+        <DeleteProduct id={product.id}>Delete</DeleteProduct>
       </div>
     </ItemStyles>
   )
