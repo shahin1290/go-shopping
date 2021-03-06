@@ -34,7 +34,7 @@ const Header = () => {
     <HeaderStyles>
       <div className='bar'>
         <Logo>
-          <Link to='/'>Sick fits</Link>
+          <Link to='/products'>Sick fits</Link>
         </Logo>
         <Nav />
       </div>

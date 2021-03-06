@@ -1,74 +1,35 @@
 import React from 'react'
-import { useMutation, gql } from '@apollo/client'
+import ItemStyles from './styles/ItemStyles'
+import { Link } from 'react-router-dom'
+import AddToCart from './AddToCart'
+import formatMoney from '../lib/formatMoney'
+import PriceTag from './styles/PriceTag'
+import Title from './styles/Title'
 
-import { useUser, CURRENT_USER_QUERY } from './User'
-
-export const ADD_TO_CART = gql`
-  mutation ADD_TO_CART($id: ID!) {
-    addToCart(id: $id) {
-      id
-      product {
-        id
-        description
-        price
-      }
-      quantity
-    }
-  }
-`
-
-const ProductItem = ({ prod, history }) => {
-  const user = useUser()
-  const [addToCart] = useMutation(ADD_TO_CART, {
-    onCompleted: (data) => {
-      console.log(data)
-    },
-    refetchQueries: [{ query: CURRENT_USER_QUERY }]
-  })
-
-  const handleAddToCart = async (id) => {
-    if (!user) {
-      return history.push('/')
-    }
-    await addToCart({ variables: { id } })
-  }
-
+const ProductItem = ({ product }) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginBottom: '30px',
-        border: 'solid 1px black',
-        padding: '10px'
-      }}
-    >
-      <div>
-        <img
-          src={prod.photos[0].imageUrl}
-          alt={prod.description}
-          width='250px'
-        />
+    <ItemStyles>
+      <img src={product.photos[0].imageUrl} alt={product.name} />
+      <Title>
+        <Link href={`/product/${product.id}`}>{product.name}</Link>
+      </Title>
+      <PriceTag>{formatMoney(product.price)}</PriceTag>
+      <p>{product.description}</p>
+      <div className='buttonList'>
+        <Link
+          href={{
+            pathname: '/update',
+            query: {
+              id: product.id
+            }
+          }}
+        >
+          Edit ✏️
+        </Link>
+        <AddToCart id={product.id} />
+        <button>Delete</button>
       </div>
-      <h3>{prod.description}</h3>
-      <h4>{prod.price} THB</h4>
-
-      <button
-        style={{
-          background: 'green',
-          color: 'white',
-          padding: '10px',
-          cursor: 'pointer',
-          border: 'none'
-        }}
-        onClick={() => handleAddToCart(prod.id)}
-      >
-        {' '}
-        Add to Cart
-        {/* {loading ? 'Processing....' : 'Add to Cart'} */}
-      </button>
-    </div>
+    </ItemStyles>
   )
 }
 

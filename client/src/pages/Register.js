@@ -4,6 +4,8 @@ import { useMutation } from '@apollo/client'
 // import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks.js'
 import { REGISTER_USER } from '../mutations'
+import Form from '../components/styles/Form'
+import Error from '../components/ErrorMessage'
 
 function Register(props) {
   // const context = useContext(AuthContext);
@@ -15,7 +17,7 @@ function Register(props) {
     password: ''
   })
 
-  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+  const [registerUser, { data, loading }] = useMutation(REGISTER_USER, {
     onCompleted() {
       props.history.push('/')
     },
@@ -33,49 +35,55 @@ function Register(props) {
     }
   }
 
+  if (loading) return <p>loading.....</p>
+
   return (
-    <div className='form-container'>
-      <form
-        onSubmit={handleSubmit}
-        noValidate
-        className={loading ? 'loading' : ''}
-      >
-        <h1>Register</h1>
-
-        <input
-          label='Name'
-          placeholder='Name..'
-          name='name'
-          type='text'
-          value={inputs.name}
-          error={errors.includes('name')}
-          onChange={handleChange}
-        />
-        <input
-          label='Email'
-          placeholder='Email..'
-          name='email'
-          type='email'
-          value={inputs.email}
-          error={errors.includes('email')}
-          onChange={handleChange}
-        />
-        <input
-          label='Password'
-          placeholder='Password..'
-          name='password'
-          type='password'
-          value={inputs.password}
-          error={errors.includes('password')}
-          onChange={handleChange}
-        />
-
-        <button type='submit' primary>
-          Register
-        </button>
-      </form>
-      {errors && <div className='ui error message'>{errors}</div>}
-    </div>
+    <Form method='POST' onSubmit={handleSubmit}>
+      <h2>Sign Up For an Account</h2>
+      <Error error={errors} />
+      <fieldset>
+        {data?.registerUser && (
+          <p>
+            Signed up with {data.registerUser.email} - Please Go Head and Sign
+            in!
+          </p>
+        )}
+        <label htmlFor='email'>
+          Your Name
+          <input
+            type='text'
+            name='name'
+            placeholder='Your Name'
+            autoComplete='name'
+            value={inputs.name}
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor='email'>
+          Email
+          <input
+            type='email'
+            name='email'
+            placeholder='Your Email Address'
+            autoComplete='email'
+            value={inputs.email}
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor='password'>
+          Password
+          <input
+            type='password'
+            name='password'
+            placeholder='Password'
+            autoComplete='password'
+            value={inputs.password}
+            onChange={handleChange}
+          />
+        </label>
+        <button type='submit'>Sign In!</button>
+      </fieldset>
+    </Form>
   )
 }
 

@@ -58,8 +58,6 @@ const InnerStyles = styled.div`
   padding: 2rem;
 `
 
-
-
 function App() {
   return (
     <AuthProvider>
@@ -67,7 +65,7 @@ function App() {
       <Router>
         <Header />
         <InnerStyles>
-          <Route exact path='/' component={Home} />
+          <Route exact path='/products' component={Home} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/sell' component={Sell} />

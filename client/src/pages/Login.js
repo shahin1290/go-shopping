@@ -1,9 +1,10 @@
-import React, { useState,  useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { useMutation } from '@apollo/client'
-
 import { useForm } from '../util/hooks.js'
 import { LOGIN_USER } from '../mutations'
 import { AuthContext } from '../context/auth'
+import Form from '../components/styles/Form'
+import Error from '../components/ErrorMessage'
 
 function Login(props) {
   const context = useContext(AuthContext)
@@ -35,44 +36,38 @@ function Login(props) {
     }
   }
 
+  if (loading) return <p>loading.....</p>
+
   return (
-    <div className='form-container'>
-      <form
-        onSubmit={handleSubmit}
-        noValidate
-        className={loading ? 'loading' : ''}
-      >
-        <h1>Login</h1>
-
-        <input
-          label='Email'
-          placeholder='Email..'
-          name='email'
-          type='email'
-          value={inputs.email}
-          error={
-            errors.includes('email') || errors.includes('wrong credentials')
-          }
-          onChange={handleChange}
-        />
-        <input
-          label='Password'
-          placeholder='Password..'
-          name='password'
-          type='password'
-          value={inputs.password}
-          error={
-            errors.includes('password') || errors.includes('wrong credentials')
-          }
-          onChange={handleChange}
-        />
-
-        <button type='submit' primary>
-          Login
-        </button>
-      </form>
-      {errors && <div className='ui error message'>{errors}</div>}
-    </div>
+    <Form method='POST' onSubmit={handleSubmit}>
+      <h2>Sign Into Your Account</h2>
+      <Error error={errors} />
+      <fieldset>
+        <label htmlFor='email'>
+          Email
+          <input
+            type='email'
+            name='email'
+            placeholder='Your Email Address'
+            autoComplete='email'
+            value={inputs.email}
+            onChange={handleChange}
+          />
+        </label>
+        <label htmlFor='password'>
+          Password
+          <input
+            type='password'
+            name='password'
+            placeholder='Password'
+            autoComplete='password'
+            value={inputs.password}
+            onChange={handleChange}
+          />
+        </label>
+        <button type='submit'>Sign In!</button>
+      </fieldset>
+    </Form>
   )
 }
 

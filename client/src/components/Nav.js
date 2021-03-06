@@ -1,29 +1,29 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../context/auth'
-// import { useUser } from './User'
+import NavStyles from './styles/NavStyles'
 
 function Nav() {
   const { user, logout } = useContext(AuthContext)
   // const data = useUser()
 
   return (
-    <div>
-      <Link href='/'>Products</Link>
+    <NavStyles>
+      <Link to='/products'>Products</Link>
       {user && (
         <>
-          <Link href='/sell'>Sell</Link>
-          <Link href='/cart'>Orders</Link>
+          <Link to='/sell'>Sell</Link>
+          <Link to='/cart'>Orders</Link>
           <Link onClick={logout}>Signout</Link>
         </>
       )}
       {!user && (
         <>
-          <Link href='/signin'>Sign In</Link>
-          <Link href='/register'>Register</Link>
+          <Link to='/login'>Log In</Link>
+          <Link to='/register'>Register</Link>
         </>
       )}
-    </div>
+    </NavStyles>
   )
 }
 
