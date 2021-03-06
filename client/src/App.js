@@ -9,6 +9,7 @@ import Cart from './pages/Carts'
 import Sell from './pages/Sell'
 import { AuthProvider } from './context/auth'
 import styled, { createGlobalStyle } from 'styled-components'
+import UpdateProduct from './pages/UpdateProduct'
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -70,6 +71,7 @@ function App() {
           <Route exact path='/register' component={Register} />
           <Route exact path='/sell' component={Sell} />
           <Route exact path='/cart' component={Cart} />
+          <Route exact path='/edit/:id' component={UpdateProduct} />
         </InnerStyles>
       </Router>
     </AuthProvider>

@@ -24,7 +24,7 @@ function Login(props) {
     },
 
     onError(err) {
-      setErrors(err.message)
+      setErrors(err)
     }
   })
 

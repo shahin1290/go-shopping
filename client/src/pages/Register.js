@@ -22,7 +22,7 @@ function Register(props) {
       props.history.push('/')
     },
     onError(err) {
-      setErrors(err.message)
+      setErrors(err)
     },
     variables: inputs
   })
@@ -36,6 +36,7 @@ function Register(props) {
   }
 
   if (loading) return <p>loading.....</p>
+  console.log(errors)
 
   return (
     <Form method='POST' onSubmit={handleSubmit}>

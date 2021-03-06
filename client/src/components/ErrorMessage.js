@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
 
-import PropTypes from 'prop-types'
-
 const ErrorStyles = styled.div`
   padding: 2rem;
   background: white;
@@ -19,7 +17,7 @@ const ErrorStyles = styled.div`
 `
 
 const DisplayError = ({ error }) => {
-  if (!error) return null
+  if (!error || !error.message) return null
   /* if (
     error.networkError &&
     error.networkError.result &&
@@ -38,18 +36,10 @@ const DisplayError = ({ error }) => {
     <ErrorStyles>
       <p>
         <strong>Shoot!</strong>
-        {error}
+        {error.message}
       </p>
     </ErrorStyles>
   )
-}
-
-DisplayError.defaultProps = {
-  error: {}
-}
-
-DisplayError.propTypes = {
-  error: PropTypes.object
 }
 
 export default DisplayError
