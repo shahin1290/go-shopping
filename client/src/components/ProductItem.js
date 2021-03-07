@@ -1,8 +1,8 @@
 import React from 'react'
 import ItemStyles from './styles/ItemStyles'
 import { Link } from 'react-router-dom'
-// import AddToCart from './AddToCart'
-import formatMoney from './lib/formatMoney'
+import AddToCart from './AddToCart'
+import formatMoney from '../lib/formatMoney'
 import PriceTag from './styles/PriceTag'
 import Title from './styles/Title'
 import DeleteProduct from './DeleteProduct'
@@ -18,6 +18,7 @@ const ProductItem = ({ product }) => {
       <p>{product.description}</p>
       <div className='buttonList'>
         <Link to={`/edit/${product.id}`}>Edit ✏️</Link>
+        <AddToCart id={product.id} />
         <DeleteProduct id={product.id}>Delete</DeleteProduct>
       </div>
     </ItemStyles>
