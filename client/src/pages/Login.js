@@ -20,7 +20,7 @@ function Login(props) {
     variables: inputs,
     update(_, { data: { loginUser: userData } }) {
       context.login(userData)
-      props.history.push('/')
+      props.history.push('/products')
     },
 
     onError(err) {

@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useMutation } from '@apollo/client'
 
 import { useForm } from '../util/hooks.js'
 import { CREATE_PRODUCT_MUTATION } from '../mutations'
 
 function Sell(props) {
-  const [errors, setErrors] = useState('')
+  // const [errors, setErrors] = useState('')
 
   const { inputs, handleChange, resetForm } = useForm({
     name: '',
@@ -17,9 +17,9 @@ function Sell(props) {
     onCompleted() {
       props.history.push('/')
     },
-    onError(err) {
+    /* onError(err) {
       setErrors(err.message)
-    },
+    }, */
     variables: inputs
   })
 
@@ -55,7 +55,6 @@ function Sell(props) {
           name='name'
           type='text'
           value={inputs.name}
-          error={errors.includes('name')}
           onChange={handleChange}
         />
         <input
@@ -64,7 +63,6 @@ function Sell(props) {
           name='description'
           type='text'
           value={inputs.description}
-          error={errors.includes('description')}
           onChange={handleChange}
         />
         <input
@@ -73,15 +71,13 @@ function Sell(props) {
           name='price'
           type='number'
           value={inputs.price}
-          error={errors.includes('price')}
           onChange={handleChange}
         />
 
-        <button type='submit' primary>
+        <button type='submit'>
           Add!
         </button>
       </form>
-      {errors && <div className='ui error message'>{errors}</div>}
     </div>
   )
 }

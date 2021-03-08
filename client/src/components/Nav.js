@@ -19,7 +19,7 @@ function Nav() {
         <>
           <Link to='/sell'>Sell</Link>
           <Link to='/cart'>Orders</Link>
-          <Link onClick={logout}>Signout</Link>
+          <button onClick={logout}>Signout</button>
           <button type='button' onClick={openCart}>
             My Cart
             <CartCount

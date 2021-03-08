@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 
-// import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks.js'
 import { REGISTER_USER } from '../mutations'
 import Form from '../components/styles/Form'
 import Error from '../components/ErrorMessage'
 
 function Register(props) {
-  // const context = useContext(AuthContext);
   const [errors, setErrors] = useState('')
 
   const { inputs, handleChange, resetForm } = useForm({
@@ -36,7 +34,6 @@ function Register(props) {
   }
 
   if (loading) return <p>loading.....</p>
-  console.log(errors)
 
   return (
     <Form method='POST' onSubmit={handleSubmit}>

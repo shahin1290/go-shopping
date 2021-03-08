@@ -12,7 +12,7 @@ const ProductItem = ({ product }) => {
     <ItemStyles>
       <img src={product.photos[0].imageUrl} alt={product.name} />
       <Title>
-        <Link to={`/product/${product.id}`}>{product.name}</Link>
+        <Link to='/products'>{product.name}</Link>
       </Title>
       <PriceTag>{formatMoney(product.price)}</PriceTag>
       <p>{product.description}</p>
