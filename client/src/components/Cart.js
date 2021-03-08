@@ -7,10 +7,19 @@ import CartItem from './CartItem'
 import formatMoney from '../lib/formatMoney'
 import calcTotalPrice from '../lib/calcTotalPrice'
 import { useCart } from '../lib/cartState'
+import { Checkout } from './Checkout'
 
 export default function Cart() {
   const user = useUser()
   const { cartOpen, closeCart } = useCart()
+
+  const calculateAmount = (carts) => {
+    const amount = carts.reduce(
+      (sum, cart) => sum + cart.quantity * cart.product.price,
+      0
+    )
+    return amount * 100
+  }
 
   if (!user) return null
 
@@ -26,7 +35,7 @@ export default function Cart() {
       </ul>
       <footer>
         <p>{formatMoney(calcTotalPrice(user.carts))}</p>
-        {/* <Checkout /> */}
+        <Checkout amount={calculateAmount(user.carts)} />
       </footer>
     </CartStyles>
   )

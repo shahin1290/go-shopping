@@ -1,6 +1,7 @@
 // import styled from 'styled-components';
 import { loadStripe } from '@stripe/stripe-js'
 import { useHistory } from 'react-router-dom'
+import styled from 'styled-components'
 
 import {
   CardElement,
@@ -16,15 +17,16 @@ import { useMutation } from '@apollo/client'
 // import SickButton from './styles/SickButton';
 // import { useCart } from '../lib/cartState';
 import { CURRENT_USER_QUERY } from './User'
+import SickButton from './styles/SickButton'
 
-/* const CheckoutFormStyles = styled.form`
+const CheckoutFormStyles = styled.form`
   box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 5px;
   padding: 1rem;
   display: grid;
   grid-gap: 1rem;
-`; */
+`
 
 const CREATE_ORDER_MUTATION = gql`
   mutation CREATE_ORDER_MUTATION($token: String!, $amount: Float!) {
@@ -62,7 +64,6 @@ function CheckoutForm({ amount }) {
       type: 'card',
       card: elements.getElement(CardElement)
     })
-    console.log(paymentMethod)
     // 4. Handle any errors from stripe
     if (error) {
       setError(error)
@@ -94,14 +95,12 @@ function CheckoutForm({ amount }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <CheckoutFormStyles onSubmit={handleSubmit}>
       {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
       {graphQLError && <p style={{ fontSize: 12 }}>{graphQLError.message}</p>}
       <CardElement />
-      <button type='submit' disabled={!amount}>
-        pay now
-      </button>
-    </form>
+      <SickButton>Check Out Now</SickButton>
+    </CheckoutFormStyles>
   )
 }
 
