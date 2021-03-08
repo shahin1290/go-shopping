@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-//import { useCart } from '../lib/cartState'
+import { useCart } from '../lib/cartState'
 import CartCount from './CartCount'
 import { AuthContext } from '../context/auth'
 import NavStyles from './styles/NavStyles'
@@ -8,7 +8,7 @@ import { useUser } from './User'
 
 function Nav() {
   const { user, logout } = useContext(AuthContext)
-  //const { openCart } = useCart()
+  const { openCart } = useCart()
 
   const data = useUser()
 
@@ -20,10 +20,10 @@ function Nav() {
           <Link to='/sell'>Sell</Link>
           <Link to='/cart'>Orders</Link>
           <Link onClick={logout}>Signout</Link>
-          <button type='button'>
+          <button type='button' onClick={openCart}>
             My Cart
             <CartCount
-              count={data?.user?.carts.reduce(
+              count={data?.carts.reduce(
                 (tally, cartItem) =>
                   tally + (cartItem.product ? cartItem.quantity : 0),
                 0

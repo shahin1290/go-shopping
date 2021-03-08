@@ -10,6 +10,7 @@ import Sell from './pages/Sell'
 import { AuthProvider } from './context/auth'
 import styled, { createGlobalStyle } from 'styled-components'
 import UpdateProduct from './pages/UpdateProduct'
+import { CartStateProvider } from './lib/cartState'
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -62,18 +63,20 @@ const InnerStyles = styled.div`
 function App() {
   return (
     <AuthProvider>
-      <GlobalStyles />
-      <Router>
-        <Header />
-        <InnerStyles>
-          <Route exact path='/products' component={Home} />
-          <Route exact path='/login' component={Login} />
-          <Route exact path='/register' component={Register} />
-          <Route exact path='/sell' component={Sell} />
-          <Route exact path='/cart' component={Cart} />
-          <Route exact path='/edit/:id' component={UpdateProduct} />
-        </InnerStyles>
-      </Router>
+      <CartStateProvider>
+        <GlobalStyles />
+        <Router>
+          <Header />
+          <InnerStyles>
+            <Route exact path='/products' component={Home} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/sell' component={Sell} />
+            <Route exact path='/cart' component={Cart} />
+            <Route exact path='/edit/:id' component={UpdateProduct} />
+          </InnerStyles>
+        </Router>
+      </CartStateProvider>
     </AuthProvider>
   )
 }

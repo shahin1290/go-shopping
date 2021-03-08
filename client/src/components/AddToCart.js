@@ -1,6 +1,7 @@
 import React from 'react'
 import { useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
+import { useCart } from '../lib/cartState'
 
 import gql from 'graphql-tag'
 
@@ -22,12 +23,10 @@ export const ADD_TO_CART = gql`
 
 export default function AddToCart({ id }) {
   const history = useHistory()
+  const { openCart } = useCart()
 
   const user = useUser()
   const [addToCart, { loading }] = useMutation(ADD_TO_CART, {
-    onCompleted: (data) => {
-      console.log(data)
-    },
     refetchQueries: [{ query: CURRENT_USER_QUERY }]
   })
 
@@ -35,7 +34,10 @@ export default function AddToCart({ id }) {
     if (!user) {
       return history.push('/login')
     }
-    await addToCart({ variables: { id } })
+    const res = await addToCart({ variables: { id } })
+    if (res) {
+      openCart()
+    }
   }
 
   return (
