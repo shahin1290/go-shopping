@@ -87,7 +87,7 @@ module.exports = gql`
 
     addToCart(id: ID!): CartItem!
 
-    createOrder(amount: Float!, token: String): Order
+    createOrder(token: String): Order
 
     removeFromCart(id: ID!): CartItem!
   }

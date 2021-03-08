@@ -29,8 +29,8 @@ const CheckoutFormStyles = styled.form`
 `
 
 const CREATE_ORDER_MUTATION = gql`
-  mutation CREATE_ORDER_MUTATION($token: String!, $amount: Float!) {
-    createOrder(token: $token, amount: $amount) {
+  mutation CREATE_ORDER_MUTATION($token: String!) {
+    createOrder(token: $token) {
       id
     }
   }
@@ -39,7 +39,7 @@ const CREATE_ORDER_MUTATION = gql`
 // eslint-disable-next-line no-undef
 const stripeLib = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE)
 
-function CheckoutForm({ amount }) {
+function CheckoutForm() {
   const history = useHistory()
 
   const [error, setError] = useState()
@@ -73,8 +73,7 @@ function CheckoutForm({ amount }) {
     // 5. Send the token from step 3 to our keystone server, via a custom mutation!
     await checkout({
       variables: {
-        token: paymentMethod.id,
-        amount
+        token: paymentMethod.id
       }
     })
     console.log('Finished with the order!!')
@@ -104,10 +103,10 @@ function CheckoutForm({ amount }) {
   )
 }
 
-function Checkout({ amount }) {
+function Checkout() {
   return (
     <Elements stripe={stripeLib}>
-      <CheckoutForm amount={amount} />
+      <CheckoutForm />
     </Elements>
   )
 }

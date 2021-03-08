@@ -13,14 +13,6 @@ export default function Cart() {
   const user = useUser()
   const { cartOpen, closeCart } = useCart()
 
-  const calculateAmount = (carts) => {
-    const amount = carts.reduce(
-      (sum, cart) => sum + cart.quantity * cart.product.price,
-      0
-    )
-    return amount * 100
-  }
-
   if (!user) return null
 
   return (
@@ -35,7 +27,7 @@ export default function Cart() {
       </ul>
       <footer>
         <p>{formatMoney(calcTotalPrice(user.carts))}</p>
-        <Checkout amount={calculateAmount(user.carts)} />
+        <Checkout />
       </footer>
     </CartStyles>
   )
