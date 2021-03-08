@@ -85,12 +85,10 @@ module.exports = gql`
 
     loginUser(email: String!, password: String!): User!
 
+    addToCart(id: ID!): CartItem!
 
-    addToCart(id: ID!): CartItem
+    createOrder(amount: Float!, token: String): Order
 
-    createOrder(
-      amount: Float!
-      token: String
-    ): Order
+    removeFromCart(id: ID!): CartItem!
   }
 `

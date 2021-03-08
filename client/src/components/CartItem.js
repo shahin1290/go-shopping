@@ -1,14 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import formatMoney from '../lib/formatMoney'
-
-/* const DELETE_CART = gql`
-  mutation DELETE_CART($id: ID!) {
-    deleteCart(id: $id) {
-      id
-    }
-  }
-` */
+import RemoveFromCart from './RemoveFromCart'
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -39,7 +32,7 @@ function CartItem({ cartItem }) {
           </em>
         </p>
       </div>
-      {/* <RemoveFromCart id={cartItem.id} /> */}
+      <RemoveFromCart id={cartItem.id} />
     </CartItemStyles>
   )
 }
