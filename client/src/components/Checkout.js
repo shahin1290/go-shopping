@@ -15,7 +15,7 @@ import gql from 'graphql-tag'
 import { useMutation } from '@apollo/client'
 // import { Router, useRouter } from 'next/dist/client/router';
 // import SickButton from './styles/SickButton';
-// import { useCart } from '../lib/cartState';
+import { useCart } from '../lib/cartState'
 import { CURRENT_USER_QUERY } from './User'
 import SickButton from './styles/SickButton'
 
@@ -41,12 +41,12 @@ const stripeLib = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE)
 
 function CheckoutForm() {
   const history = useHistory()
-
+  const [ref, setRef] = useState(null)
   const [error, setError] = useState()
   const stripe = useStripe()
   const elements = useElements()
   // const router = useRouter();
-  // const { closeCart } = useCart();
+  const { closeCart } = useCart()
   const [checkout, { error: graphQLError }] = useMutation(
     CREATE_ORDER_MUTATION,
     {
@@ -71,22 +71,21 @@ function CheckoutForm() {
       return // stops the checkout from happening
     }
     // 5. Send the token from step 3 to our keystone server, via a custom mutation!
-    await checkout({
+    const order = await checkout({
       variables: {
         token: paymentMethod.id
       }
     })
     console.log('Finished with the order!!')
-    history.push('/')
+
+    //clear card information
+    ref.clear()
+
     // 6. Change the page to view the order
-    /* router.push({
-      pathname: `/order/[id]`,
-      query: {
-        id: order.data.checkout.id,
-      },
-    }); */
+    history.push(`/order/${order.data.createOrder.id}`)
+
     // 7. Close the cart
-    // closeCart();
+    closeCart()
 
     // 8. turn the loader off
     //setLoading(false)
@@ -97,7 +96,7 @@ function CheckoutForm() {
     <CheckoutFormStyles onSubmit={handleSubmit}>
       {error && <p style={{ fontSize: 12 }}>{error.message}</p>}
       {graphQLError && <p style={{ fontSize: 12 }}>{graphQLError.message}</p>}
-      <CardElement />
+      <CardElement onReady={(e) => setRef(e)} />
       <SickButton>Check Out Now</SickButton>
     </CheckoutFormStyles>
   )

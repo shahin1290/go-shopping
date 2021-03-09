@@ -18,7 +18,7 @@ function Nav() {
       {user && (
         <>
           <Link to='/sell'>Sell</Link>
-          <Link to='/cart'>Orders</Link>
+          <Link to='/orders'>Orders</Link>
           <button onClick={logout}>Signout</button>
           <button type='button' onClick={openCart}>
             My Cart

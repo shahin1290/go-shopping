@@ -18,7 +18,7 @@ module.exports = async (_, { token }, { authService, models }) => {
 
   // Create the charge with stripe
 
-     const charge = await stripe.paymentIntents
+  const charge = await stripe.paymentIntents
     .create({
       amount,
       currency: 'USD',
@@ -28,7 +28,7 @@ module.exports = async (_, { token }, { authService, models }) => {
     .catch((err) => {
       console.log(err)
       throw new Error(err.message)
-    }) 
+    })
 
   const orderItems = cartItems.map((cartItem) => {
     const orderItem = {
@@ -36,8 +36,7 @@ module.exports = async (_, { token }, { authService, models }) => {
       description: cartItem.product.description,
       price: cartItem.product.price,
       quantity: cartItem.quantity,
-      photo: cartItem.product.photos[0],
-      user: userId
+      photo: cartItem.product.photos[0]
     }
     return orderItem
   })
@@ -49,7 +48,8 @@ module.exports = async (_, { token }, { authService, models }) => {
   const order = await models.Order.create({
     total: charge.amount,
     charge: charge.id,
-    items: newOrderItems.map((orderItem) => orderItem.id)
+    items: newOrderItems.map((orderItem) => orderItem.id),
+    user: userId
   })
 
   // Delete cartItem from the database
@@ -70,5 +70,5 @@ module.exports = async (_, { token }, { authService, models }) => {
   // return order
   return models.Order.findById(order.id)
     .populate({ path: 'user' })
-    .populate({ path: 'items', populate: { path: 'product' } }) 
+    .populate({ path: 'items', populate: { path: 'product' } })
 }

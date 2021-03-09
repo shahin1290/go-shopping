@@ -24,5 +24,16 @@ module.exports = {
     })
 
     return products
+  },
+
+  allOrders: async (_, {}, { models, authService }) => {
+    const userId = authService.assertIsAuthorized()
+    return await models.Order.find({})
+      .populate('user')
+      .populate({
+        path: 'items',
+        model: 'OrderItem',
+        populate: { path: 'photo', model: 'Photo' }
+      })
   }
 }

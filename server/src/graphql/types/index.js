@@ -42,17 +42,19 @@ module.exports = gql`
 
   type OrderItem {
     id: ID!
-    product: Product!
+    name: String!
+    description: String!
+    price: Int!
     quantity: Int!
-    user: User!
-    createdAt: Date!
+    photo: Photo!
   }
 
   type Order {
     id: ID!
+    charge: String!
+    total: Int!
     user: User!
     items: [OrderItem!]!
-    createdAt: Date!
   }
 
   type Query {
@@ -60,6 +62,7 @@ module.exports = gql`
     allPhotos: [Photo]
     product(id: ID!): Product!
     me: User
+    allOrders: [Order!]!
   }
 
   type Mutation {
