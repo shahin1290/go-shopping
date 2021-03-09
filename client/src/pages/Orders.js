@@ -55,25 +55,23 @@ function Orders() {
         {allOrders.map((order) => (
           <OrderItemStyles key={order.id}>
             <Link to={`/order/${order.id}`}>
-              <a>
-                <div className='order-meta'>
-                  <p>{countItemsInAnOrder(order)} Items</p>
-                  <p>
-                    {order.items.length} Product
-                    {order.items.length === 1 ? '' : 's'}
-                  </p>
-                  <p>{formatMoney(order.total)}</p>
-                </div>
-                <div className='images'>
-                  {order.items.map((item) => (
-                    <img
-                      key={`image-${item.id}`}
-                      src={item.photo?.imageUrl}
-                      alt={item.name}
-                    />
-                  ))}
-                </div>
-              </a>
+              <div className='order-meta'>
+                <p>{countItemsInAnOrder(order)} Items</p>
+                <p>
+                  {order.items.length} Product
+                  {order.items.length === 1 ? '' : 's'}
+                </p>
+                <p>{formatMoney(order.total)}</p>
+              </div>
+              <div className='images'>
+                {order.items.map((item) => (
+                  <img
+                    key={`image-${item.id}`}
+                    src={item.photo?.imageUrl}
+                    alt={item.name}
+                  />
+                ))}
+              </div>
             </Link>
           </OrderItemStyles>
         ))}

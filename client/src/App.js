@@ -8,6 +8,7 @@ import Register from './pages/Register'
 import Cart from './pages/Carts'
 import Sell from './pages/Sell'
 import Orders from './pages/Orders'
+import Order from './pages/Order'
 import { AuthProvider } from './context/auth'
 import styled, { createGlobalStyle } from 'styled-components'
 import UpdateProduct from './pages/UpdateProduct'
@@ -75,6 +76,7 @@ function App() {
             <Route exact path='/sell' component={Sell} />
             <Route exact path='/cart' component={Cart} />
             <Route exact path='/orders' component={Orders} />
+            <Route exact path='/order/:id' component={Order} />
             <Route exact path='/edit/:id' component={UpdateProduct} />
           </InnerStyles>
         </Router>

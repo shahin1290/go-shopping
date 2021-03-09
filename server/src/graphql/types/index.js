@@ -63,6 +63,7 @@ module.exports = gql`
     product(id: ID!): Product!
     me: User
     allOrders: [Order!]!
+    order(id: ID!): Order!
   }
 
   type Mutation {

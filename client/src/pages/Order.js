@@ -1,13 +1,13 @@
 import React from 'react'
 import { useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
-import ErrorMessage from '../../components/ErrorMessage'
-import OrderStyles from '../../components/styles/OrderStyles'
-import formatMoney from '../../lib/formatMoney'
+import ErrorMessage from '../components/ErrorMessage'
+import OrderStyles from '../components/styles/OrderStyles'
+import formatMoney from '../lib/formatMoney'
 
 const SINGLE_ORDER_QUERY = gql`
   query SINGLE_ORDER_QUERY($id: ID!) {
-    order: Order(where: { id: $id }) {
+    order(id: $id) {
       id
       charge
       total
@@ -27,9 +27,11 @@ const SINGLE_ORDER_QUERY = gql`
     }
   }
 `
-export default function SingleOrderPage({ query }) {
+function Order(props) {
+  const id = props.match.params.id
+
   const { data, error, loading } = useQuery(SINGLE_ORDER_QUERY, {
-    variables: { id: query.id }
+    variables: { id }
   })
   if (loading) return <p>Loading...</p>
   if (error) return <ErrorMessage error={error} />
@@ -58,7 +60,7 @@ export default function SingleOrderPage({ query }) {
       <div className='items'>
         {order.items.map((item) => (
           <div className='order-item' key={item.id}>
-            <img src={item.photo.image.publicUrlTransformed} alt={item.title} />
+            <img src={item.photo.imageUrl} alt={item.title} />
             <div className='item-details'>
               <h2>{item.name}</h2>
               <p>Qty: {item.quantity}</p>
@@ -72,3 +74,5 @@ export default function SingleOrderPage({ query }) {
     </OrderStyles>
   )
 }
+
+export default Order

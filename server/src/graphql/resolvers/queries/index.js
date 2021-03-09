@@ -27,8 +27,18 @@ module.exports = {
   },
 
   allOrders: async (_, {}, { models, authService }) => {
-    const userId = authService.assertIsAuthorized()
+    authService.assertIsAuthorized()
     return await models.Order.find({})
+      .populate('user')
+      .populate({
+        path: 'items',
+        model: 'OrderItem',
+        populate: { path: 'photo', model: 'Photo' }
+      })
+  },
+  order: async (_, { id }, { models, authService }) => {
+    authService.assertIsAuthorized()
+    return await models.Order.findById(id)
       .populate('user')
       .populate({
         path: 'items',
