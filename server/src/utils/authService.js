@@ -48,6 +48,13 @@ class AuthService {
 
     return userId
   }
+
+  assertAdmin = (roles) => {
+    assertIsAuthorized()
+    if (roles.includes('ADMIN')) {
+      throw new AuthenticationError('You need to be a admin')
+    }
+  }
 }
 
 const createAuthService = (options) => new AuthService(options)

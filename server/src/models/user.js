@@ -18,12 +18,18 @@ const schema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
     }
-  ], orders: [
+  ],
+  orders: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Order'
     }
-  ]
+  ],
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  }
 })
 
 schema.pre('save', async function (next) {

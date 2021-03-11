@@ -1,13 +1,18 @@
 const { UserInputError } = require('apollo-server-express')
 const uploadFile = require('./uploadFile')
 
-module.exports = async (_, args, { models }) => {
+module.exports = async (_, args, { models, authService }) => {
+  const userId = authService.assertIsAuthorized()
+
+  const user = await models.User.findById(userId)
+
   try {
     const { name, description, price, photo } = args
     const newProduct = new models.Product({
       name,
       description,
-      price
+      price,
+      user
     })
 
     const createdProduct = await newProduct.save()

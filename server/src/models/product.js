@@ -21,6 +21,11 @@ const schema = new mongoose.Schema({
       ref: 'Photo',
     },
   ],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
 });
 
 const Product = mongoose.model('Product', schema);

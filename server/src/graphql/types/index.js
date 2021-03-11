@@ -17,6 +17,11 @@ module.exports = gql`
     id: ID!
   }
 
+  enum Role {
+    ADMIN
+    USER
+  }
+
   type User {
     name: String!
     email: String!
@@ -25,6 +30,7 @@ module.exports = gql`
     id: ID!
     carts: [CartItem]
     products: [Product]
+    roles: [Role]
   }
 
   type AuthorizationPayload {
