@@ -15,7 +15,6 @@ module.exports = async (_, args, { models }) => {
 
   const { id, name, description, price } = args
 
-  const product = await models.Product.findById(id)
   product.name = name
   product.description = description
   product.price = price
