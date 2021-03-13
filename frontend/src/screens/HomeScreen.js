@@ -2,6 +2,8 @@ import React from 'react'
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/Product'
 import products from '../products'
+import Message from '../components/Message'
+import Loader from '../components/Loader'
 
 const HomeScreen = () => {
   return (

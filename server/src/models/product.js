@@ -1,32 +1,70 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const schema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-    maxLength: 20,
+const reviewSchema = mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    rating: { type: Number, required: true },
+    comment: { type: String, required: true }
   },
-  description: {
-    type: String,
-    minlength: 10,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  photos: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Photo',
+  {
+    timestamps: true
+  }
+)
+
+const schema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true
     },
-  ],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
-  },
-});
+    description: {
+      type: String,
+      minlength: 10
+    },
+    price: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    image: {
+      type: String,
+      required: true
+    },
 
-const Product = mongoose.model('Product', schema);
-module.exports = { Product };
+    brand: {
+      type: String,
+      required: true
+    },
+    category: {
+      type: String,
+      required: true
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    reviews: [reviewSchema],
+    rating: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    countInStock: {
+      type: Number,
+      required: true,
+      default: 0
+    }
+  },
+  {
+    timestamps: true
+  }
+)
+
+const Product = mongoose.model('Product', schema)
+module.exports = { Product }

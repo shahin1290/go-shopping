@@ -1,3 +1,5 @@
+const { NotFoundError } = require('../../../errors')
+
 module.exports = {
   allProducts: async (_, {}, { models }) => {
     return await models.Product.find({}).populate('photos')
@@ -8,7 +10,12 @@ module.exports = {
   },
 
   product: async (_, { id }, { models }) => {
-    return await models.Product.findById(id).populate('photos')
+    const product = await models.Product.findById(id).populate('photos')
+
+    if (!product) {
+      throw new NotFoundError()
+    }
+    return product
   },
 
   me: async (root, args, { models, authService }) => {

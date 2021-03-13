@@ -2,17 +2,20 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
 const schema = new mongoose.Schema({
-  name: String,
-  email: String,
-  password: String,
-  stripeId: String,
-  type: { type: String, default: 'free-trial' },
-  carts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'CartItem'
-    }
-  ],
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+
   products: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -25,10 +28,10 @@ const schema = new mongoose.Schema({
       ref: 'Order'
     }
   ],
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
+  isAdmin: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 })
 
@@ -44,4 +47,5 @@ schema.methods.matchPassword = async function (
 }
 
 const User = mongoose.model('User', schema)
+
 module.exports = { User }

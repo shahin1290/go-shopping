@@ -5,7 +5,9 @@
   "author": "Wes Bos",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon ./src/index.js"
+    "dev": "nodemon ./src/index.js",
+    "data:import": "node ./src/seeder.js",
+    "data:destroy": "node ./src/seeder.js -d"
   },
   "babel": {
     "presets": [
@@ -31,8 +33,10 @@
     "apollo-server-express": "^2.21.0",
     "bcrypt": "^5.0.0",
     "cloudinary": "^1.24.0",
+    "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "es6-error": "^4.1.1",
     "express": "^4.17.1",
     "graphql": "^15.5.0",
     "jsonwebtoken": "^8.5.1",

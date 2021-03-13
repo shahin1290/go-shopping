@@ -13,7 +13,6 @@ module.exports = gql`
     name: String!
     description: String!
     price: Int!
-    photos: [Photo]
     id: ID!
   }
 
