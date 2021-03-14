@@ -10,7 +10,7 @@ module.exports = {
   },
 
   product: async (_, { id }, { models }) => {
-    const product = await models.Product.findById(id).populate('photos')
+    const product = await models.Product.findById(id)
 
     if (!product) {
       throw new NotFoundError()

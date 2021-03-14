@@ -1,11 +1,44 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from '@apollo/client'
+import gql from 'graphql-tag'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import products from '../products'
+import Message from '../components/Message'
+import Loader from '../components/Loader'
+
+export const PRODUCT_DETAILS = gql`
+  query PRODUCT_DETAILS($id: ID!) {
+    product(id: $id) {
+      id
+      name
+      description
+      price
+      image
+      brand
+      category
+      countInStock
+      rating
+      numReviews
+    }
+  }
+`
 
 const ProductScreen = ({ match }) => {
-  const product = products.find((p) => p._id === match.params.id)
+  const { data, loading, error } = useQuery(PRODUCT_DETAILS, {
+    variables: { id: match.params.id }
+  })
+
+  if (loading) {
+    return <Loader />
+  }
+
+  if (error) {
+    return <Message variant='danger'>{error.message}</Message>
+  }
+
+  const product = data?.product
+
 
   return (
     <>
