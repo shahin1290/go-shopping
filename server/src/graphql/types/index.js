@@ -10,10 +10,16 @@ module.exports = gql`
   }
 
   type Product {
+    id: ID!
     name: String!
     description: String!
-    price: Int!
-    id: ID!
+    image: String!
+    price: Float!
+    brand: String!
+    category: String!
+    countInStock: Int!
+    rating: Float!
+    numReviews: Int!
   }
 
   enum Role {
