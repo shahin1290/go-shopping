@@ -29,9 +29,9 @@ class AuthService {
     return tokenPayload.userId
   }
 
-  createAccessToken(userId, name) {
+  createAccessToken(userId) {
     return {
-      accessToken: jwt.sign({ userId, name }, this.jwtSecret, {
+      accessToken: jwt.sign({ userId }, this.jwtSecret, {
         expiresIn: '7d',
         subject
       }),

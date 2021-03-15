@@ -23,11 +23,11 @@ module.exports = async (root, args, { models, authService }) => {
     throw new UserInputError('wrong credentials')
   }
 
-  const token = authService.createAccessToken(user.id, user.name).accessToken
-
   return {
-    ...user._doc,
     id: user._id,
-    token
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    token: authService.createAccessToken(user.id).accessToken
   }
 }
