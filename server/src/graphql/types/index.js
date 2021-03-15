@@ -30,12 +30,9 @@ module.exports = gql`
   type User {
     name: String!
     email: String!
-    password: String!
     token: String!
+    isAdmin: Boolean!
     id: ID!
-    carts: [CartItem]
-    products: [Product]
-    roles: [Role]
   }
 
   type AuthorizationPayload {

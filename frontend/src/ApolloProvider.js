@@ -1,6 +1,7 @@
 import React from 'react'
 import App from './App'
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
+import { AuthProvider } from './auth'
 
 import { createUploadLink } from 'apollo-upload-client'
 import { setContext } from 'apollo-link-context'
@@ -10,7 +11,9 @@ const httpLink = createUploadLink({
 })
 
 const authLink = setContext(() => {
-  const token = localStorage.getItem('jwtToken')
+  const token = localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo')).token
+    : null
   return {
     headers: {
       Authorization: token ? `bearer ${token}` : null
@@ -25,6 +28,8 @@ const client = new ApolloClient({
 
 export default (
   <ApolloProvider client={client}>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </ApolloProvider>
 )

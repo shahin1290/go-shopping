@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useMutation } from '@apollo/client'
@@ -6,6 +6,7 @@ import gql from 'graphql-tag'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
+import { AuthContext } from '../auth'
 
 export const LOGIN_USER = gql`
   mutation loginUser($email: String!, $password: String!) {
@@ -22,11 +23,16 @@ const LoginScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const context = useContext(AuthContext)
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     variables: { email, password },
+    update(_, { data: { loginUser: userData } }) {
+      context.login(userData)
+      history.push('/')
+    },
 
     onError(err) {
       setError(err.message)
@@ -35,14 +41,7 @@ const LoginScreen = ({ location, history }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault()
-
-    const res = await loginUser()
-
-    if (res) {
-      console.log(res.data.loginUser)
-      localStorage.setItem('userInfo', JSON.stringify(res.data.loginUser))
-      history.push(redirect)
-    }
+    await loginUser()
   }
 
   if (loading) {

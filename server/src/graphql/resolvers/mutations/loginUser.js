@@ -23,6 +23,7 @@ module.exports = async (root, args, { models, authService }) => {
     throw new UserInputError('wrong credentials')
   }
 
+
   return {
     id: user._id,
     name: user.name,
