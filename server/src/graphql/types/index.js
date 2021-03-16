@@ -93,7 +93,7 @@ module.exports = gql`
 
     deleteProduct(id: ID!): Product
 
-    registerUser(name: String!, email: String!, password: String!): User!
+    registerUser(name: String!, email: String!, password: String!, passwordConfirm: String!): User!
 
     loginUser(email: String!, password: String!): User!
 
