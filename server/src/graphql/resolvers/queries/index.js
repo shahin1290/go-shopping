@@ -5,10 +5,6 @@ module.exports = {
     return await models.Product.find({}).populate('photos')
   },
 
-  allPhotos: async (_, {}, { models }) => {
-    return await models.Photo.find({}).populate('product')
-  },
-
   product: async (_, { id }, { models }) => {
     const product = await models.Product.findById(id)
 
@@ -20,8 +16,15 @@ module.exports = {
 
   me: async (root, args, { models, authService }) => {
     const userId = authService.assertIsAuthorized()
-    
-    const user = await models.User.findById(userId)
+
+    const user = await models.User.findById(userId).populate({
+      path: 'carts',
+      model: 'CartItem',
+      populate: {
+        path: 'product',
+        model: 'Product'
+      }
+    })
 
     return user
   },

@@ -15,11 +15,17 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  
+
   products: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
+    }
+  ],
+  carts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CartItem'
     }
   ],
   orders: [

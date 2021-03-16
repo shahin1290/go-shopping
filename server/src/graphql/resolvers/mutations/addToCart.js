@@ -4,8 +4,6 @@ module.exports = async (_, args, { authService, models }) => {
 
   const userId = authService.assertIsAuthorized()
 
-  //console.log(id, userId)
-
   try {
     const user = await models.User.findById(userId).populate({
       path: 'carts',

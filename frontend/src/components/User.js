@@ -6,6 +6,21 @@ const CURRENT_USER_QUERY = gql`
       id
       name
       email
+      carts {
+        product {
+          id
+          name
+          description
+          price
+          image
+          brand
+          category
+          countInStock
+          rating
+          numReviews
+        }
+        quantity
+      }
     }
   }
 `

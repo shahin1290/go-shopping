@@ -3,12 +3,6 @@ const { gql } = require('apollo-server-express')
 module.exports = gql`
   scalar Date
 
-  type Photo {
-    imageUrl: String!
-    id: ID!
-    product: Product!
-  }
-
   type Product {
     id: ID!
     name: String!
@@ -33,6 +27,7 @@ module.exports = gql`
     token: String!
     isAdmin: Boolean!
     id: ID!
+    carts: [CartItem!]!
   }
 
   type AuthorizationPayload {
@@ -54,7 +49,6 @@ module.exports = gql`
     description: String!
     price: Int!
     quantity: Int!
-    photo: Photo!
   }
 
   type Order {
@@ -67,9 +61,8 @@ module.exports = gql`
 
   type Query {
     allProducts: [Product!]!
-    allPhotos: [Photo]
     product(id: ID!): Product!
-    me: User
+    me: User!
     allOrders: [Order!]!
     order(id: ID!): Order!
   }
@@ -82,7 +75,6 @@ module.exports = gql`
       photo: Upload
     ): Product
 
-    uploadPhoto(photo: Upload!): Photo!
 
     updateProduct(
       id: ID!
@@ -93,7 +85,12 @@ module.exports = gql`
 
     deleteProduct(id: ID!): Product
 
-    registerUser(name: String!, email: String!, password: String!, passwordConfirm: String!): User!
+    registerUser(
+      name: String!
+      email: String!
+      password: String!
+      passwordConfirm: String!
+    ): User!
 
     loginUser(email: String!, password: String!): User!
 

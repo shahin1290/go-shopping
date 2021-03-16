@@ -14,7 +14,6 @@ const RegisterScreen = ({ location, history }) => {
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [error, setError] = useState('')
-  const [message, setMessage] = useState(null)
   const context = useContext(AuthContext)
 
   const REGISTER_USER = gql`
@@ -64,7 +63,6 @@ const RegisterScreen = ({ location, history }) => {
   return (
     <FormContainer>
       <h1>Sign Up</h1>
-      {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
