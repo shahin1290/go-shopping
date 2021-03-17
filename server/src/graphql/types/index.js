@@ -94,7 +94,7 @@ module.exports = gql`
 
     loginUser(email: String!, password: String!): User!
 
-    addToCart(id: ID!): CartItem!
+    addToCart(id: ID!, quantity: Int!): CartItem!
 
     createOrder(token: String): Order
 

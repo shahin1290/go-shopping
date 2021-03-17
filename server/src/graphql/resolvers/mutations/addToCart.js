@@ -1,6 +1,6 @@
 module.exports = async (_, args, { authService, models }) => {
   // id --> productId
-  const { id } = args
+  const { id, quantity } = args
 
   const userId = authService.assertIsAuthorized()
 
@@ -17,7 +17,7 @@ module.exports = async (_, args, { authService, models }) => {
     if (findCartItemIndex > -1) {
       // A. The new addToCart item is already in cart
       // A.1 Find the cartItem and update in database
-      user.carts[findCartItemIndex].quantity += 1
+      user.carts[findCartItemIndex].quantity = quantity
 
       await models.CartItem.findByIdAndUpdate(
         user.carts[findCartItemIndex].id,
@@ -39,7 +39,7 @@ module.exports = async (_, args, { authService, models }) => {
       // B.1 Create new cartItem
       const cartItem = await models.CartItem.create({
         product: id,
-        quantity: 1,
+        quantity,
         user: userId
       })
 

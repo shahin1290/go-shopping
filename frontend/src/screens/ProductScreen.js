@@ -6,6 +6,7 @@ import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { useUser, CURRENT_USER_QUERY } from '../components/User'
 
 export const PRODUCT_DETAILS = gql`
   query PRODUCT_DETAILS($id: ID!) {
@@ -26,6 +27,7 @@ export const PRODUCT_DETAILS = gql`
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(0)
+  const user = useUser()
 
   const { data, loading, error } = useQuery(PRODUCT_DETAILS, {
     variables: { id: match.params.id }
@@ -35,13 +37,12 @@ const ProductScreen = ({ history, match }) => {
     return <Loader />
   }
 
-  if (error) {
-    return <Message variant='danger'>{error.message}</Message>
-  }
-
   const product = data?.product
 
   const addToCartHandler = () => {
+    if (!user) {
+      return history.push('/login')
+    }
     history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
 

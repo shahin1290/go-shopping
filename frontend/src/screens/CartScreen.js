@@ -6,8 +6,8 @@ import Message from '../components/Message'
 import { useUser, CURRENT_USER_QUERY } from '../components/User'
 
 export const ADD_TO_CART = gql`
-  mutation ADD_TO_CART($id: ID!) {
-    addToCart(id: $id) {
+  mutation ADD_TO_CART($id: ID!, $quantity: Int!) {
+    addToCart(id: $id, quantity: $quantity) {
       id
       quantity
     }
@@ -23,15 +23,13 @@ const CartScreen = ({ match, location, history }) => {
 
   const productId = match.params.id
 
-  const qty = location.search ? Number(location.search.split('=')[1]) : 1
-
-  console.log(qty)
+  const quantity = location.search ? Number(location.search.split('=')[1]) : 1
 
   useEffect(() => {
     if (productId) {
-      addToCart({ variables: { id: productId } })
+      addToCart({ variables: { id: productId, quantity } })
     }
-  }, [addToCart, productId, qty])
+  }, [addToCart, productId, quantity])
 
   const removeFromCartHandler = (id) => {
     //dispatch(removeFromCart(id))
@@ -75,7 +73,12 @@ const CartScreen = ({ match, location, history }) => {
                       as='select'
                       value={item.quantity}
                       onChange={(e) =>
-                        addToCart({ variables: { id: item.product.id } })
+                        addToCart({
+                          variables: {
+                            id: item.product.id,
+                            quantity: e.target.value
+                          }
+                        })
                       }
                     >
                       {[...Array(item.product.countInStock).keys()].map((x) => (

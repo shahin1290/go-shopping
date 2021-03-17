@@ -7,6 +7,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { AuthContext } from '../auth'
+import {CURRENT_USER_QUERY} from '../components/User'
 
 export const LOGIN_USER = gql`
   mutation loginUser($email: String!, $password: String!) {
@@ -28,7 +29,7 @@ const LoginScreen = ({ location, history }) => {
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    variables: { email, password },
+    variables: { email, password }, refetchQueries: [{query: CURRENT_USER_QUERY}],
     update(_, { data: { loginUser: userData } }) {
       context.login(userData)
       history.push('/')
